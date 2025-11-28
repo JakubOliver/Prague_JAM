@@ -5,6 +5,24 @@
 
 [node name="MainScrene" type="Node2D"]
 
+[node name="Players2" parent="." instance=ExtResource("1_3mqji")]
+position = Vector2(817, 139)
+script = ExtResource("2_x4av3")
+Speed = 400000
+
+[node name="RigidBody2D" type="RigidBody2D" parent="."]
+position = Vector2(603, 271)
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="RigidBody2D"]
+material = SubResource("ShaderMaterial_x4av3")
+position = Vector2(0, 1)
+shape = SubResource("CapsuleShape2D_rpqi1")
+
+[node name="Sprite2D" type="Sprite2D" parent="RigidBody2D"]
+position = Vector2(0.9999924, 3.4999962)
+scale = Vector2(94.000015, 241)
+texture = SubResource("CanvasTexture_uxrcv")
+
 [node name="Players" parent="." instance=ExtResource("1_3mqji")]
 
 [node name="Soldier" parent="." instance=ExtResource("2_x4av3")]

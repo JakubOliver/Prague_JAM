@@ -1,7 +1,7 @@
-using Godot;
 using System;
+using Godot;
 
-public partial class Soldier : Area2D, Person
+public partial class Soldier : Area2D, IPerson, IMove
 {
 	[Signal]
 	public delegate void HitEventHandler();

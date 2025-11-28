@@ -7,7 +7,7 @@ public enum PersonClothing
     Gandalf
 }
 
-public interface Person
+public interface IPerson
 {
     int HP { get; set;  }
     int Damage { get; set;  }   
@@ -17,6 +17,9 @@ public interface Person
     PersonClothing weapon { get; set; }
 }
 
-static class EnemyMover
+
+public interface IMove
 {
+    void Move(double delta);
 }
+
