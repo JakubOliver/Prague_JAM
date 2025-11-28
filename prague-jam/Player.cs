@@ -1,11 +1,18 @@
 using Godot;
 using System;
 
-public partial class Player : Area2D
+public partial class Player : Area2D, Person
 {
 	[Export]	
 	public int Speed { get; set; } = 400;
 	public Vector2 ScreenSize;
+
+	public int HP { get; set; } = 100;
+	public int Damage { get; set; } = 10;
+
+	public PersonClothing head { get; set; } = PersonClothing.Player;
+	public PersonClothing body { get; set; } = PersonClothing.Player;
+	public PersonClothing weapon { get; set; } = PersonClothing.Player;
 
 	public void Start(Vector2 position)
 	{
