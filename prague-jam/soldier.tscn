@@ -199,7 +199,7 @@ animations = [{
 "duration": 1.0,
 "texture": SubResource("AtlasTexture_3qmhc")
 }],
-"loop": true,
+"loop": false,
 "name": &"death",
 "speed": 10.0
 }, {
@@ -209,7 +209,7 @@ animations = [{
 }],
 "loop": true,
 "name": &"hit",
-"speed": 0.01
+"speed": 0.1
 }, {
 "frames": [{
 "duration": 1.0,
@@ -293,8 +293,9 @@ shape = SubResource("CapsuleShape2D_8swxs")
 [node name="AnimatedSprite2D" type="AnimatedSprite2D" parent="."]
 scale = Vector2(2, 2)
 sprite_frames = SubResource("SpriteFrames_8swxs")
-animation = &"hit"
-frame_progress = 0.9085958
+animation = &"death"
+frame = 9
+frame_progress = 1.0
 
 [connection signal="area_entered" from="." to="." method="OnBodyEntered"]
 [connection signal="area_exited" from="." to="." method="OnBodyExited"]
