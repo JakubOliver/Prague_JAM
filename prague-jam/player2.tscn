@@ -1,0 +1,26 @@
+[gd_scene load_steps=5 format=3 uid="uid://biyckqal00uh7"]
+
+[ext_resource type="Script" uid="uid://bja341rha88t5" path="res://Player2.cs" id="1_rihsh"]
+[ext_resource type="Texture2D" uid="uid://0xl7mhr5ajna" path="res://icon.svg" id="2_vop8p"]
+
+[sub_resource type="SpriteFrames" id="SpriteFrames_tj0vx"]
+animations = [{
+"frames": [{
+"duration": 1.0,
+"texture": ExtResource("2_vop8p")
+}],
+"loop": true,
+"name": &"default",
+"speed": 5.0
+}]
+
+[sub_resource type="CircleShape2D" id="CircleShape2D_y02ay"]
+
+[node name="Player" type="Area2D"]
+script = ExtResource("1_rihsh")
+
+[node name="AnimatedSprite2D" type="AnimatedSprite2D" parent="."]
+sprite_frames = SubResource("SpriteFrames_tj0vx")
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="."]
+shape = SubResource("CircleShape2D_y02ay")
