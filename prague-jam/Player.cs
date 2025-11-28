@@ -60,6 +60,6 @@ public partial class Player : Area2D, Person
 			y: Mathf.Clamp(Position.Y, 0, ScreenSize.Y)
 		);
 
-		GD.Print(Position);
+		//GD.Print(Position);
 	}
 }
