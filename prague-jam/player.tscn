@@ -294,3 +294,6 @@ shape = SubResource("CapsuleShape2D_i3pqv")
 scale = Vector2(2, 2)
 sprite_frames = SubResource("SpriteFrames_4flbx")
 animation = &"run"
+
+[connection signal="area_entered" from="." to="." method="OnBodyEntered"]
+[connection signal="area_exited" from="." to="." method="OnBodyExited"]

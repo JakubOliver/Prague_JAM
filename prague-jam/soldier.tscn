@@ -209,7 +209,7 @@ animations = [{
 }],
 "loop": true,
 "name": &"hit",
-"speed": 10.0
+"speed": 0.01
 }, {
 "frames": [{
 "duration": 1.0,
@@ -293,6 +293,8 @@ shape = SubResource("CapsuleShape2D_8swxs")
 [node name="AnimatedSprite2D" type="AnimatedSprite2D" parent="."]
 scale = Vector2(2, 2)
 sprite_frames = SubResource("SpriteFrames_8swxs")
-animation = &"death"
+animation = &"hit"
+frame_progress = 0.9085958
 
 [connection signal="area_entered" from="." to="." method="OnBodyEntered"]
+[connection signal="area_exited" from="." to="." method="OnBodyExited"]

@@ -5,11 +5,15 @@ public interface IPerson
 {
 	int Health { get; set; }
 	int Damage { get; set; }
+	PersonState State { get; set; }
+	void ChangeState(PersonState newState);
+	void GetHit(int damage);
+	void HitSomeone();
 }
 
 public enum PersonState
 {
-	Idle, Running, Dead, Hit, Attack
+	Idle, Running, Dead, Hit, Attack, Charging
 }
 
 public partial class Player : Area2D, IPerson
@@ -23,13 +27,39 @@ public partial class Player : Area2D, IPerson
 	public int Health { get; set; } = 100;
 	public int Damage { get; set; } = 10;
 
-	private void OnIdleStart()
+	public void ChangeState(PersonState newState)
 	{
-		
+		State = newState;
+	}
+
+	private bool _inCollision = false;
+	private IPerson _collisionVictim = null;
+	
+	private void OnBodyEntered(Node2D body)
+	{
+		_inCollision = true;
+		_collisionVictim = (IPerson)body;
+		ChangeState(PersonState.Charging);
 	}
 	
-	private void OnIdleEnd()
+	private void OnBodyExited(Node2D body) {
+		_inCollision = false;
+		_collisionVictim = null;
+		ChangeState(PersonState.Idle);
+	}
+	
+	public void HitSomeone()
 	{
+		if (_inCollision)
+		{
+			_collisionVictim.GetHit(Damage);
+		}
+	}
+	
+	public void GetHit(int damage)
+	{
+		Health -= damage;
+		ChangeState(PersonState.Hit);
 		
 	}
 
