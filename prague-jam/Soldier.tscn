@@ -1,0 +1,18 @@
+[gd_scene load_steps=4 format=3 uid="uid://dx7npo1ivdx2d"]
+
+[ext_resource type="Script" uid="uid://cbqhjwnn20x7h" path="res://Soldier.cs" id="1_av0cm"]
+
+[sub_resource type="CapsuleShape2D" id="CapsuleShape2D_av0cm"]
+
+[sub_resource type="SpriteFrames" id="SpriteFrames_av0cm"]
+
+[node name="Node2D" type="Area2D"]
+script = ExtResource("1_av0cm")
+metadata/_edit_group_ = true
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="."]
+shape = SubResource("CapsuleShape2D_av0cm")
+script = ExtResource("1_av0cm")
+
+[node name="AnimatedSprite2D" type="AnimatedSprite2D" parent="."]
+sprite_frames = SubResource("SpriteFrames_av0cm")

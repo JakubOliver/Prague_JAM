@@ -1,4 +1,4 @@
-enum PersonClothing
+public enum PersonClothing
 {
     Player,
     Dragon,
@@ -7,7 +7,7 @@ enum PersonClothing
     Gandalf
 }
 
-interface Person
+public interface Person
 {
     int HP { get; set;  }
     int Damage { get; set;  }   
