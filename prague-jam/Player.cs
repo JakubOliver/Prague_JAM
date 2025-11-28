@@ -1,11 +1,37 @@
 using Godot;
 using System;
 
-public partial class Player : Area2D
+public interface IPerson
+{
+	int Health { get; set; }
+	int Damage { get; set; }
+}
+
+public enum PersonState
+{
+	Idle, Running, Dead, Hit, Attack
+}
+
+public partial class Player : Area2D, IPerson
 {
 	[Export]	
 	public int Speed { get; set; } = 400;
 	public Vector2 ScreenSize;
+
+	public PersonState State { get; set; } = PersonState.Idle;
+	
+	public int Health { get; set; } = 100;
+	public int Damage { get; set; } = 10;
+
+	private void OnIdleStart()
+	{
+		
+	}
+	
+	private void OnIdleEnd()
+	{
+		
+	}
 
 	public void Start(Vector2 position)
 	{
