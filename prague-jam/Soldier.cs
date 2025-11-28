@@ -11,6 +11,8 @@ public partial class Soldier : RigidBody2D, IPerson, IMove
 	[Export]	
 	public int Speed { get; set; } = 400;
 	public Vector2 ScreenSize;
+	
+	Vector2 Velocity = new Vector2(100, 100);
 
 	public PersonClothing head { get; set; } = PersonClothing.Soldier;
 	public PersonClothing body { get; set; } = PersonClothing.Soldier;
@@ -18,7 +20,7 @@ public partial class Soldier : RigidBody2D, IPerson, IMove
 
 	public void Move(double delta)
 	{
-		Vector2 Velocity = new Vector2(100, 100);
+		
 		
 		// Using MoveAndCollide.
 		var collision = MoveAndCollide(Velocity * (float)delta);
@@ -28,8 +30,9 @@ public partial class Soldier : RigidBody2D, IPerson, IMove
 		}
 	}
 	
-	private void OnBodyEntered(Node2D node){
-		GD.Print("ahoj");
+	private void OnBodyEntered(Node2D node)
+	{
+		Velocity = new Vector2(400, 400);
 	}
 	
 	public void Start(Vector2 position)

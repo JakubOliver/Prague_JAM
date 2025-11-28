@@ -56,3 +56,4 @@ position = Vector2(372, 128)
 script = null
 
 [connection signal="body_entered" from="Soldier" to="Soldier" method="OnBodyEntered"]
+[connection signal="body_entered" from="Area2D" to="Soldier" method="OnBodyEntered"]
