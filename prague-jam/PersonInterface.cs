@@ -16,3 +16,7 @@ interface Person
     PersonClothing body { get; set; }
     PersonClothing weapon { get; set; }
 }
+
+static class EnemyMover
+{
+}
