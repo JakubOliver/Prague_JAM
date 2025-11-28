@@ -9,7 +9,11 @@ public partial class Soldier : Area2D
 	private AnimatedSprite2D _animatedSprite2D;
 	
 	private void OnBodyEntered(Node2D body) {
-		
+		_animatedSprite2D.Play("attack");
+		_animatedSprite2D.AnimationFinished += () =>
+		{
+			_animatedSprite2D.Play("idle");
+		};
 		GD.Print("třeba ahoj");
 	}
 	

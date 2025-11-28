@@ -77,7 +77,7 @@ animations = [{
 "duration": 1.0,
 "texture": SubResource("AtlasTexture_didp5")
 }],
-"loop": true,
+"loop": false,
 "name": &"attack",
 "speed": 5.0
 }, {
@@ -128,7 +128,8 @@ shape = SubResource("CapsuleShape2D_8swxs")
 [node name="AnimatedSprite2D" type="AnimatedSprite2D" parent="."]
 scale = Vector2(2, 2)
 sprite_frames = SubResource("SpriteFrames_8swxs")
-animation = &"idle"
-frame_progress = 0.12544459
+animation = &"attack"
+frame = 3
+frame_progress = 1.0
 
 [connection signal="area_entered" from="." to="." method="OnBodyEntered"]
