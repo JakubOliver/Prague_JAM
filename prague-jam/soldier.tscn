@@ -1,0 +1,29 @@
+[gd_scene load_steps=5 format=3 uid="uid://dn61nwubro2hg"]
+
+[ext_resource type="Script" uid="uid://hwh1mgwj5m3a" path="res://Soldier.cs" id="1_ba3fx"]
+[ext_resource type="Texture2D" uid="uid://chydtda41bgtw" path="res://icon.svg" id="1_siw8g"]
+
+[sub_resource type="CircleShape2D" id="CircleShape2D_ba3fx"]
+
+[sub_resource type="SpriteFrames" id="SpriteFrames_8swxs"]
+animations = [{
+"frames": [{
+"duration": 1.0,
+"texture": ExtResource("1_siw8g")
+}],
+"loop": true,
+"name": &"default",
+"speed": 5.0
+}]
+
+[node name="Soldier" type="Area2D"]
+script = ExtResource("1_ba3fx")
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="."]
+scale = Vector2(8, 8)
+shape = SubResource("CircleShape2D_ba3fx")
+
+[node name="AnimatedSprite2D" type="AnimatedSprite2D" parent="."]
+sprite_frames = SubResource("SpriteFrames_8swxs")
+
+[connection signal="area_entered" from="." to="." method="OnBodyEntered"]
