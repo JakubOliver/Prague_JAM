@@ -17,8 +17,6 @@ public partial class Floor : TileMapLayer
 	
 	private void SetLavaTile(Vector2I floorCoordinates)
 	{
-		if (OverlapsWithPlayer(ArenaCoordinates(floorCoordinates))) return;
-		
 		SetCell(floorCoordinates, 0, new Vector2I(0, 0));
 		_lavaTiles.Enqueue(floorCoordinates);
 	}
@@ -46,7 +44,10 @@ public partial class Floor : TileMapLayer
 		int x = GD.RandRange(0, MaxNotOutOfRangeCoordinateX);
 		int y = GD.RandRange(0, MaxNotOutOfRangeCoordinateY);
 		
-		SetLavaTile(new Vector2I(x, y));
+		var floorCoordinates = new Vector2I(x, y);
+		
+		if (OverlapsWithPlayer(ArenaCoordinates(floorCoordinates))) return;
+		SetLavaTile(floorCoordinates);
 	}
 	public void ClearLeastRecentLavaTile()
 	{
@@ -62,6 +63,7 @@ public partial class Floor : TileMapLayer
 	
 	public override void _Ready()
 	{
+
 		// GD.Seed(12343);
 		for (int i = 0; i < 5; ++i) GenerateRandomLavaTile();
 		//for (int i = 0; i < 5; ++i) ClearLeastRecentLavaTile();
