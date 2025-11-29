@@ -33,6 +33,15 @@ public partial class Player : Area2D, IPerson, IState
 	
 	public int Health { get; set; } = 100;
 	public int Damage { get; set; } = 10;
+	
+	public double Cooldown { get; set; } = 0.2;
+
+	public double CooldownTimer { get; set; } = 0.0;
+	
+	public double HitCooldownTimer { get; set; } = 0.0;
+
+	private bool _inCollision = false;
+	private IPerson _collisionVictim = null;
 
 	public void OnStateEnter(PersonState state)
 	{
@@ -53,6 +62,16 @@ public partial class Player : Area2D, IPerson, IState
 				break;
 			case PersonState.Hit:
 				_animatedSprite2D.Play("hit");
+				
+				HitCooldownTimer = Cooldown;
+				
+				if (Health <= 0)
+				{
+					GD.Print("Dead");
+					ChangeState(PersonState.Dead);
+					return;
+				}
+				GD.Print("Change");
 				ChangeState(PersonState.Idle);
 				break;
 			case PersonState.Dead:
@@ -90,9 +109,8 @@ public partial class Player : Area2D, IPerson, IState
 		State = newState;
 		OnStateEnter(newState);
 	}
-
-	private bool _inCollision = false;
-	private IPerson _collisionVictim = null;
+	
+	
 	
 	private void OnBodyEntered(Node2D body)
 	{
@@ -117,15 +135,15 @@ public partial class Player : Area2D, IPerson, IState
 	
 	public void GetHit(int damage)
 	{
-		if (!_inCollision)
+		if (!_inCollision || State == PersonState.Dead || State == PersonState.Hit)
 		{
 			return;
-			
 		}
 		
+		GD.Print("Hit");
 		Health -= damage;
+		GD.Print("Health: " + Health);
 		ChangeState(PersonState.Hit);
-		
 	}
 
 	public void Start(Vector2 position)
@@ -143,9 +161,14 @@ public partial class Player : Area2D, IPerson, IState
 		_animatedSprite2D.Play("idle");
 		_animatedSprite2D.AnimationFinished += () =>
 		{
-			ChangeState(PersonState.Idle);
+			if (State != PersonState.Dead && State != PersonState.Attack)
+			{
+				_animatedSprite2D.Play("idle");
+			}
 		};
 	}
+	
+	Vector2 scale = new Vector2(1, 1);
 
 	// Called every frame. 'delta' is the elapsed time since the previous frame.
 	public override void _Process(double delta)
@@ -156,13 +179,14 @@ public partial class Player : Area2D, IPerson, IState
 		}
 		
 		Vector2 velocity = Vector2.Zero;
-		Vector2 scale = new Vector2(1, 1);
+		
 
 		if (State != PersonState.Hit)
 		{
 			if (Input.IsActionPressed("move_right"))
 			{
 				velocity.X += 1;
+				scale.X = 1;
 			}
 		
 			if (Input.IsActionPressed("move_left"))
@@ -203,6 +227,19 @@ public partial class Player : Area2D, IPerson, IState
 			{
 				ChangeState(PersonState.Idle);
 				_animatedSprite2D.Play("idle");
+			}
+		}
+		
+		if (HitCooldownTimer > 0)
+		{
+			if (HitCooldownTimer - delta <= 0)
+			{
+				HitCooldownTimer = 0;
+				ChangeState(PersonState.Idle);
+			}
+			else
+			{
+				HitCooldownTimer -= delta;
 			}
 		}
 
