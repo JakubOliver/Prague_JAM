@@ -5,6 +5,7 @@ public partial class intro_cutscene : Node2D
 {
 	public AnimatedSprite2D AnimatedSpriteWizard;
 	private AnimationPlayer AnimationPlayer;
+	private Sprite2D SpeechBubble;
 	public ScriptedFloor ScriptedFloor;
 	private bool cutscene_started = false;
 	private bool cutscene_finished = false;
@@ -13,6 +14,7 @@ public partial class intro_cutscene : Node2D
 	{
 		
 		AnimationPlayer = GetNode<AnimationPlayer>("Transition/AnimationPlayer");
+		SpeechBubble = GetNode<Sprite2D>("SpeechBubble");
 		var rect = AnimationPlayer.GetParent().GetNode<ColorRect>("ColorRect");
 		rect.Color = new Color(0, 0, 0, 1.0f);
 		AnimatedSpriteWizard = GetNode<AnimatedSprite2D>("Wizard/AnimatedSprite2D");
@@ -40,7 +42,7 @@ public partial class intro_cutscene : Node2D
 		cutscene_finished=true;
 	}
 	// Called every frame. 'delta' is the elapsed time since the previous frame.
-	public override void _Process(double delta)
+	public async override void _Process(double delta)
 	{
 		if (!cutscene_started)
 		{
@@ -50,6 +52,13 @@ public partial class intro_cutscene : Node2D
 		if (cutscene_finished)
 		{
 			AnimatedSpriteWizard.Play("Idle");
+			await ToSignal(GetTree().CreateTimer(1.0f), SceneTreeTimer.SignalName.Timeout);
+			SpeechBubble.Visible = true;
+			await ToSignal(GetTree().CreateTimer(3.0f), SceneTreeTimer.SignalName.Timeout);
+			AnimationPlayer.Play("fade_in");
+			await ToSignal(AnimationPlayer, "animation_finished");
+
+			GetTree().ChangeSceneToFile("res://main_scene.tscn");
 		}
 	}
 }
