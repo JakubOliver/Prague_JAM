@@ -173,15 +173,21 @@ public partial class Player : Person
 {
 	private void OnBodyEntered(Node2D body)
 	{
+		InCollision = true;
+		if (body is IPerson)
+		{
+			CollisionVictim = (IPerson)body;
+		//ChangeState(PersonState.Charging);
+		}
+
 		if (body is ITile)
 		{
 			GD.Print("Collided with title");
+			GetHit(Health);
+
+			GD.Print(Health);
 			return;
 		}
-
-		InCollision = true;
-		CollisionVictim = (IPerson)body;
-		//ChangeState(PersonState.Charging);
 	}
 	
 	private void OnBodyExited(Node2D body) {
