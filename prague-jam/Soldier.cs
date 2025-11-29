@@ -109,7 +109,7 @@ public partial class Soldier : Person
 		if (velocity.Length() > 0){
 			velocity = velocity.Normalized() * Speed;
 		}
-		GD.Print("Screensize: " + ScreenSize);
+
 		if (State != PersonState.Charging && State != PersonState.Attack)
 		{
 			if (Position.Y >= ScreenSize.Y - 220 || Position.Y <= ScreenSize.Y - 900)
