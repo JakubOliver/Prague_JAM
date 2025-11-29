@@ -291,11 +291,9 @@ scale = Vector2(2.5, 2.5)
 shape = SubResource("CapsuleShape2D_8swxs")
 
 [node name="AnimatedSprite2D" type="AnimatedSprite2D" parent="."]
-scale = Vector2(2, 2)
+scale = Vector2(5, 5)
 sprite_frames = SubResource("SpriteFrames_8swxs")
-animation = &"death"
-frame = 9
-frame_progress = 1.0
+animation = &"idle"
 
 [connection signal="area_entered" from="." to="." method="OnBodyEntered"]
 [connection signal="area_exited" from="." to="." method="OnBodyExited"]
