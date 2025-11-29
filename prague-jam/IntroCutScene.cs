@@ -38,7 +38,7 @@ public partial class IntroCutScene : Node2D
 		AnimatedSpriteWizard.Play("attack");
 		await ToSignal(AnimatedSpriteWizard, "animation_finished");
 		
-		ScriptedFloor.GetTiles(500);
+		//ScriptedFloor.GetTiles(500);
 		cutscene_finished=true;
 	}
 	// Called every frame. 'delta' is the elapsed time since the previous frame.

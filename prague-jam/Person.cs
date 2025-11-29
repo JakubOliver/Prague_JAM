@@ -44,7 +44,11 @@ public partial class Person : Area2D
 		if (Health <= 0)
 		{
 			ChangeAnimation(Stages.Dead);
-			InCollisionWith.ChangeAnimation(Stages.Idle);
+
+			if (InCollisionWith != null)
+			{
+				InCollisionWith.ChangeAnimation(Stages.Idle);
+			}
 		}
 		else
 		{
