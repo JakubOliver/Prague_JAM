@@ -65,7 +65,7 @@ public partial class Floor : TileMapLayer
 	{
 
 		// GD.Seed(12343);
-		for (int i = 0; i < 5; ++i) GenerateRandomLavaTile();
+		//for (int i = 0; i < 5; ++i) GenerateRandomLavaTile();
 		//for (int i = 0; i < 5; ++i) ClearLeastRecentLavaTile();
 	}
 }

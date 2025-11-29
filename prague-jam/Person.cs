@@ -27,6 +27,13 @@ public partial class Person : Area2D
 
 	public bool AlreadyInAttack = false;
 
+	protected AnimationPlayer AnimationPlayer;
+
+	protected void GetTransition()
+	{
+		AnimationPlayer = GetParent().GetNode<AnimationPlayer>("Transition/AnimationPlayer");
+	}
+
 	public void DoHit(Person target)
 	{
 		ChangeAnimation(Stages.Attack);
@@ -38,16 +45,31 @@ public partial class Person : Area2D
 		}
 	}
 
+	virtual protected async void Dead()
+	{
+		await ToSignal(GetTree().CreateTimer(3.0f), SceneTreeTimer.SignalName.Timeout);
+		AnimationPlayer.Play("fade_in");
+		await ToSignal(AnimationPlayer, "animation_finished");
+
+		GetTree().ReloadCurrentScene();
+	}
+
 	public void GetHit(int damage)
 	{
 		Health -= damage;
 		if (Health <= 0)
 		{
 			ChangeAnimation(Stages.Dead);
-
 			if (InCollisionWith != null)
 			{
 				InCollisionWith.ChangeAnimation(Stages.Idle);
+				Dead();
+				return;
+			}
+
+			if (this is Wizard || this is Soldier)
+			{
+				Dead();
 			}
 		}
 		else

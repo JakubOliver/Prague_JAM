@@ -21,6 +21,7 @@ public partial class Soldier : Person
 		ScreenSize = GetViewportRect().Size;
 		AnimatedSprite2D = GetNode<AnimatedSprite2D>("AnimatedSprite2D");
 		AnimatedSprite2D.Play("idle");
+		GetTransition();
 	}
 
 	public void OnBodyEntered(Area2D area)
