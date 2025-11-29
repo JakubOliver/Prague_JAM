@@ -42,24 +42,10 @@ public partial class Soldier : Person
 	public override void OnStateEnter(PersonState state)
 	{
 		base.OnStateEnter(state);
-		switch (state)
-		{
-			case PersonState.Attack:
-				if (CollisionVictim == null)
-				{
-					return;
-				}
-				if (CollisionVictim.State != PersonState.Dead)
-				{
-					ChangeState(PersonState.Charging);
-				}
-				else
-				{
-					ChangeState(PersonState.Idle);
-				}
-
-				break;
-		}
+		if (CollisionVictim == null) return;
+		
+		var newState = CollisionVictim.State is PersonState.Dead ? PersonState.Idle : PersonState.Charging;
+		ChangeState(newState);
 	}
 	
 	public override void HitSomeone()
@@ -103,27 +89,79 @@ public partial class Soldier : Person
 
 	private Vector2 velocityBase = new Vector2(1, 1);
 
+
+	private void FollowLivePlayer()
+	{
+		GD.Print(PlayerInstance.Position);
+		Vector2 diff = PlayerInstance.Position - Position;
+		
+		if (InCollision || !CanChangeDirection) return;
+		
+		GD.Print("Dir changed");
+		int epsilon = 10;
+		
+		velocityBase.X = diff.X > epsilon ? 1 : diff.X < -epsilon ? -1 : 0;
+		velocityBase.Y = diff.Y > epsilon ? 1 : diff.Y < -epsilon ? -1 : 0;
+		
+		CanChangeDirection = false;
+		LastDirectionChangeCooldown.Value = LastDirectionChange;
+	}
+
+	private void OnDeadPlayer()
+	{
+		if (State != PersonState.Charging && State != PersonState.Attack)
+		{
+			if (Position.Y >= ScreenSize.Y - 220 || Position.Y <= ScreenSize.Y - 900)
+			{
+				if (Position.Y >= ScreenSize.Y - 220)
+				{
+					Position = new Vector2(
+						x: Position.X,
+						y: ScreenSize.Y - 230
+					);
+				}
+
+				if (Position.Y <= ScreenSize.Y - 900)
+				{
+					Position = new Vector2(
+						x: Position.X,
+						y: ScreenSize.Y - 890
+					);
+				}
+
+				velocityBase.X = velocityBase.X;
+				velocityBase.Y = -velocityBase.Y;
+			}
+
+			if (Position.X <= 0 || Position.X >= ScreenSize.X)
+			{
+				if (Position.X <= 0)
+				{
+					Position = new Vector2(
+						x: 10,
+						y: Position.Y
+					);
+				}
+
+				if (Position.X >= ScreenSize.X)
+				{
+					Position = new Vector2(
+						x: ScreenSize.X - 10,
+						y: Position.Y
+					);
+				}
+
+				velocityBase.X = -velocityBase.X;
+				velocityBase.Y = velocityBase.Y;
+			}
+		}
+	}
+	
 	public void Move(double delta)
 	{
 
 		if (PlayerInstance.State != PersonState.Dead)
-		{
-			GD.Print(PlayerInstance.Position);
-			Vector2 diff = PlayerInstance.Position - Position;
-			if (!InCollision)
-			{
-				if (CanChangeDirection)
-				{
-					GD.Print("Dir changed");
-                    int epsilon = 10;
-					velocityBase.X = diff.X > epsilon ? 1 : diff.X < -epsilon ? -1 : 0;
-					velocityBase.Y = diff.Y > epsilon ? 1 : diff.Y < -epsilon ? -1 : 0;
-					CanChangeDirection = false;
-					LastDirectionChangeCooldown.Value = LastDirectionChange;
-				}
-				
-			}
-		}
+			FollowLivePlayer();
 
 		Vector2 velocity = velocityBase;
 		
@@ -144,55 +182,8 @@ public partial class Soldier : Person
 		}
 
 		if (PlayerInstance.State == PersonState.Dead)
-		{
-			if (State != PersonState.Charging && State != PersonState.Attack)
-			{
-				if (Position.Y >= ScreenSize.Y - 220 || Position.Y <= ScreenSize.Y - 900)
-				{
-					if (Position.Y >= ScreenSize.Y - 220)
-					{
-						Position = new Vector2(
-							x: Position.X,
-							y: ScreenSize.Y - 230
-						);
-					}
-
-					if (Position.Y <= ScreenSize.Y - 900)
-					{
-						Position = new Vector2(
-							x: Position.X,
-							y: ScreenSize.Y - 890
-						);
-					}
-
-					velocityBase.X = velocityBase.X;
-					velocityBase.Y = -velocityBase.Y;
-				}
-
-				if (Position.X <= 0 || Position.X >= ScreenSize.X)
-				{
-					if (Position.X <= 0)
-					{
-						Position = new Vector2(
-							x: 10,
-							y: Position.Y
-						);
-					}
-
-					if (Position.X >= ScreenSize.X)
-					{
-						Position = new Vector2(
-							x: ScreenSize.X - 10,
-							y: Position.Y
-						);
-					}
-
-					velocityBase.X = -velocityBase.X;
-					velocityBase.Y = velocityBase.Y;
-				}
-			}
-		}
-
+			OnDeadPlayer();
+		
 		Position += velocity * (float)delta;
 		Position = new Vector2(
 				x: Mathf.Clamp(Position.X, 0, ScreenSize.X), 
@@ -200,18 +191,14 @@ public partial class Soldier : Person
 			);
 
 		Vector2 scale = new Vector2(velocityBase.X, 1);
-
 		Scale = scale;
-
 	}
 
 	// Called every frame. 'delta' is the elapsed time since the previous frame.
 	public override void _Process(double delta)
 	{
 		if (State == PersonState.Dead)
-		{
 			return;
-		}
 		
 		Move(delta);
 		
@@ -249,8 +236,5 @@ public partial class Soldier : Person
 				CanChangeDirection = true;
 			});
 		}
-		
-		
-		
 	}
 }
