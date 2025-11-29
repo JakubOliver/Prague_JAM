@@ -10,7 +10,7 @@ public partial class Soldier : Person
 
 	private void OnBodyEntered(Node2D body)
 	{
-		if (body is ITile)
+		if (body is ITile || body is Gandalf)
 		{
 			return;
 		}

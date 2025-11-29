@@ -1,4 +1,4 @@
-[gd_scene load_steps=7 format=3 uid="uid://c2sxk6hyywpva"]
+[gd_scene load_steps=8 format=3 uid="uid://c2sxk6hyywpva"]
 
 [ext_resource type="PackedScene" uid="uid://c0my88klmnsl4" path="res://player.tscn" id="1_0f027"]
 [ext_resource type="Script" uid="uid://djnq517ovxygn" path="res://MainScene.cs" id="1_gyfs4"]
@@ -6,6 +6,7 @@
 [ext_resource type="Texture2D" uid="uid://blxtxvypltbbm" path="res://Sprites/Arena_background/arena1.png" id="4_d5x1h"]
 [ext_resource type="PackedScene" uid="uid://cxolsykkm1i14" path="res://floor.tscn" id="5_8mm7a"]
 [ext_resource type="PackedScene" uid="uid://dqwel2iiwd31t" path="res://transition.tscn" id="6_hq1ik"]
+[ext_resource type="PackedScene" uid="uid://ueoryn8q8lh6" path="res://Gandalf.tscn" id="7_nfk4m"]
 
 [node name="MainScene" type="Node2D"]
 z_index = -1
@@ -24,7 +25,13 @@ position = Vector2(1020, 688)
 position = Vector2(960, 540)
 texture = ExtResource("4_d5x1h")
 
+[node name="Gandalf" parent="." instance=ExtResource("7_nfk4m")]
+position = Vector2(1492, 810)
+rotation = 3.1415927
+scale = Vector2(2.5, -2.5)
+
 [node name="Floor" parent="." instance=ExtResource("5_8mm7a")]
 position = Vector2(2, 358)
 
 [node name="Transition" parent="." instance=ExtResource("6_hq1ik")]
+z_index = 4
