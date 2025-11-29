@@ -25,6 +25,8 @@ public enum PersonState
 
 public abstract partial class Person : Area2D, IPerson, IState
 {
+	private AnimationPlayer AnimationPlayer;
+	
 	[Signal]
 	public delegate void HitEventHandler();
 
@@ -104,6 +106,7 @@ public abstract partial class Person : Area2D, IPerson, IState
 				break;
 			case PersonState.Dead:
 				AnimatedSprite2D.Play("death");
+				Death();
 				break;
 		}
 	}
@@ -125,6 +128,15 @@ public abstract partial class Person : Area2D, IPerson, IState
 			case PersonState.Dead:
 				break;
 		}
+	}
+	public async void Death()
+	{
+		AnimatedSprite2D.Play("death");
+		await ToSignal(GetTree().CreateTimer(3.0f), SceneTreeTimer.SignalName.Timeout);
+		AnimationPlayer.Play("fade_in");
+		await ToSignal(AnimationPlayer, "animation_finished");
+
+		GetTree().ChangeSceneToFile("res://main_scene.tscn");
 	}
 	
 	public virtual void HitSomeone()
@@ -161,6 +173,7 @@ public abstract partial class Person : Area2D, IPerson, IState
 		Speed = 400;
 		ScreenSize = GetViewportRect().Size;
 		AnimatedSprite2D = GetNode<AnimatedSprite2D>("AnimatedSprite2D");
+		AnimationPlayer = GetParent().GetNode<AnimationPlayer>("Transition/AnimationPlayer");
 		AnimatedSprite2D.Play("idle");
 		AnimatedSprite2D.AnimationFinished += () =>
 		{
