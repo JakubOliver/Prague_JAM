@@ -8,7 +8,7 @@ public partial class Soldier : Person
 	[Signal]
 	public delegate void HitEventHandler();
 
-	public Area2D PlayerInstance;
+	public Player PlayerInstance;
 
 	private void OnBodyEntered(Node2D body)
 	{
@@ -73,11 +73,11 @@ public partial class Soldier : Person
 	// Called when the node enters the scene tree for the first time.
 	public override void _Ready()
 	{
-		Speed = 400;
+		Speed = 250;
 		PersonName = "Soldier";
 		
 		//PlayerInstance = GetNode<Area2D>("Player");
-		PlayerInstance = GetParent().GetNode<Area2D>("Player");
+		PlayerInstance = (Player)GetParent().GetNode<Area2D>("Player");
 		
 		AttackCooldown = 0.5;
 		
@@ -99,6 +99,14 @@ public partial class Soldier : Person
 
 	public void Move(double delta)
 	{
+
+		if (PlayerInstance.State != PersonState.Dead)
+		{
+			Vector2 diff = PlayerInstance.Position - Position;
+			velocityBase.X = diff.X >= 0 ? 1 : -1;
+			velocityBase.Y = diff.Y >= 0 ? 1 : -1;
+		}
+
 		Vector2 velocity = velocityBase;
 		
 		if (State != PersonState.Attack && State != PersonState.Charging)
@@ -195,8 +203,6 @@ public partial class Soldier : Person
 				ChangeState(PersonState.Attack);
 			});
 		}
-		
-		GD.Print("Player: " + PlayerInstance.Position);
 		
 		if (HitCooldownTimer.Value > 0)
 		{

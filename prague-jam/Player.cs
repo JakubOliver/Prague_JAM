@@ -51,7 +51,7 @@ public abstract partial class Person : Area2D, IPerson, IState
 	public int Health { get; set; } = 100;
 	public int Damage { get; set; } = 10;
 	
-	public double AttackCooldown { get; set; } = 0.1;
+	public double AttackCooldown { get; set; } = 0.3;
 	
 	public double HitCooldown { get; set; } = 0.2;
 
@@ -113,6 +113,7 @@ public abstract partial class Person : Area2D, IPerson, IState
 				//ChangeState(PersonState.Idle);
 				break;
 			case PersonState.Dead:
+				ZIndex = 1;
 				AnimatedSprite2D.Play("death");
 				break;
 		}
