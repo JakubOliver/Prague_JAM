@@ -41,7 +41,8 @@ public abstract partial class Person : Area2D, IPerson, IState
 	public int Speed { get; set; } = 400;
 	public Vector2 ScreenSize;
 	
-	public AnimatedSprite2D AnimatedSprite2D;
+	public Sprite2D Sprite2D;
+	public AnimationTree AnimationTree;
 
 	public PersonState State { get; set; } = PersonState.Idle;
 
@@ -83,24 +84,22 @@ public abstract partial class Person : Area2D, IPerson, IState
 		switch (state)
 		{
 			case PersonState.Idle:
-				AnimatedSprite2D.Play("idle");
+				//AnimatedSprite2D.Play("idle");
 				break;
 			case PersonState.Running:
-				AnimatedSprite2D.Play("run");
+				//AnimatedSprite2D.Play("run");
 				break;
 			case PersonState.Charging:
+				break;
+			case PersonState.Attack:
+				//AnimatedSprite2D.Play("attack");
 				if (CooldownTimer.Value == 0.0)
 				{
 					CooldownTimer.Value = AttackCooldown;
 				}
-
-				break;
-			case PersonState.Attack:
-				AnimatedSprite2D.Play("attack");
-				HitSomeone();
 				break;
 			case PersonState.Hit:
-				AnimatedSprite2D.Play("hit");
+				//AnimatedSprite2D.Play("hit");
 				HitCooldownTimer.Value = HitCooldown;
 				
 				if (Health <= 0)
@@ -113,7 +112,7 @@ public abstract partial class Person : Area2D, IPerson, IState
 				break;
 			case PersonState.Dead:
 				ZIndex = 1;
-				AnimatedSprite2D.Play("death");
+				//AnimatedSprite2D.Play("death");
 				break;
 		}
 	}
@@ -153,6 +152,7 @@ public abstract partial class Person : Area2D, IPerson, IState
 	
 	public virtual void HitSomeone()
 	{
+		GD.Print("Hit once");
 		if (CollisionVictim == null)
 		{
 			return;
@@ -178,26 +178,33 @@ public abstract partial class Person : Area2D, IPerson, IState
 		GD.Print("Health: " + Health);
 		ChangeState(PersonState.Hit);
 	}
+
+	public void UpdateAnimationParameters()
+	{
+		AnimationTree.Set("parameters/conditions/IsAttacking", State == PersonState.Attack);
+		AnimationTree.Set("parameters/conditions/IsIdle", State == PersonState.Idle);
+		AnimationTree.Set("parameters/conditions/IsRunning", State == PersonState.Running);
+		AnimationTree.Set("parameters/conditions/IsHit", State == PersonState.Hit);
+		AnimationTree.Set("parameters/conditions/IsDead", State == PersonState.Dead);
+	}
 	
 	public virtual void Start(Vector2 position)
 	{
 		Position = position;
 	}
 
+	public AnimationPlayer AnimationPlayer;
+
 	public override void _Ready()
 	{
 		Speed = 400;
 		ScreenSize = GetViewportRect().Size;
-		AnimatedSprite2D = GetNode<AnimatedSprite2D>("AnimatedSprite2D");
+		Sprite2D = GetNode<Sprite2D>("Sprite2D");
+		AnimationTree = GetNode<AnimationTree>("AnimationTree");
+		AnimationTree.Active = true;
+		AnimationPlayer = GetNode<AnimationPlayer>("AnimationPlayer");
+		AnimationPlayer.SpeedScale = 3;
 		//AnimatedSprite2D.Play("idle");
-		AnimatedSprite2D.AnimationFinished += () =>
-		{
-			if (State != PersonState.Dead)
-			{
-				ChangeState(PersonState.Idle);
-				AnimatedSprite2D.Play("idle");
-			}
-		};
 	}
 }
 
@@ -241,6 +248,8 @@ public partial class Player : Person
 	// Called every frame. 'delta' is the elapsed time since the previous frame.
 	public override void _Process(double delta)
 	{
+		UpdateAnimationParameters();
+		
 		if (State == PersonState.Dead)
 		{
 			return;
@@ -276,7 +285,7 @@ public partial class Player : Person
 		
 		if (Input.IsActionPressed("attack"))
 		{
-			ChangeState(PersonState.Charging);
+			ChangeState(PersonState.Attack);
 		}
 		
 		if (velocity.Length() > 0){
@@ -284,7 +293,7 @@ public partial class Player : Person
 		}
 
 
-		if (State != PersonState.Attack && State != PersonState.Charging)
+		if (State != PersonState.Attack)
 		{
 			if (velocity != Vector2.Zero)
 			{
@@ -323,9 +332,12 @@ public partial class Player : Person
 			CoolDownManager(delta, CooldownTimer, () =>
 			{
 				CooldownTimer.Value = 0;
-				ChangeState(PersonState.Attack);
+				HitSomeone();
+				//ChangeState(PersonState.Attack);
+				ChangeState(PersonState.Idle);
 			});
 		}
+		
 		
 		
 	}

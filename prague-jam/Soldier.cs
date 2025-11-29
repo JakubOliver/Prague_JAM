@@ -25,7 +25,7 @@ public partial class Soldier : Person
 		CollisionVictim = (IPerson)body;
 		if (CollisionVictim.State != PersonState.Dead)
 		{
-			ChangeState(PersonState.Charging);
+			ChangeState(PersonState.Attack);
 		}
 	}
 	
@@ -42,7 +42,7 @@ public partial class Soldier : Person
 	public override void OnStateEnter(PersonState state)
 	{
 		base.OnStateEnter(state);
-		switch (state)
+		/*switch (state)
 		{
 			case PersonState.Attack:
 				if (CollisionVictim == null)
@@ -51,7 +51,7 @@ public partial class Soldier : Person
 				}
 				if (CollisionVictim.State != PersonState.Dead)
 				{
-					ChangeState(PersonState.Charging);
+					ChangeState(PersonState.Attack);
 				}
 				else
 				{
@@ -59,7 +59,7 @@ public partial class Soldier : Person
 				}
 
 				break;
-		}
+		}*/
 	}
 	
 	public override void HitSomeone()
@@ -73,11 +73,13 @@ public partial class Soldier : Person
 			ChangeState(PersonState.Idle);
 		}
 	}
+
+	public AnimationPlayer AnimationPlayer;
 	
 	// Called when the node enters the scene tree for the first time.
 	public override void _Ready()
 	{
-		Damage = 1;
+		Damage = 10;
 		
 		Speed = 250;
 		PersonName = "Soldier";
@@ -89,7 +91,12 @@ public partial class Soldier : Person
 		
 		ScreenSize = GetViewportRect().Size;
 		
-		AnimatedSprite2D = GetNode<AnimatedSprite2D>("AnimatedSprite2D");
+		Sprite2D = GetNode<Sprite2D>("Sprite2D");
+		AnimationTree = GetNode<AnimationTree>("AnimationTree");
+		AnimationTree.Active = true;
+		AnimationPlayer = GetNode<AnimationPlayer>("AnimationPlayer");
+		//AnimationPlayer.SpeedScale = 3;
+		
 		//AnimatedSprite2D.SetAnimation("idle");
 		ChangeState(PersonState.Idle);
 		/*AnimatedSprite2D.AnimationFinished += () =>
@@ -108,14 +115,13 @@ public partial class Soldier : Person
 
 		if (PlayerInstance.State != PersonState.Dead)
 		{
-			GD.Print(PlayerInstance.Position);
 			Vector2 diff = PlayerInstance.Position - Position;
 			if (!InCollision)
 			{
 				if (CanChangeDirection)
 				{
 					GD.Print("Dir changed");
-                    int epsilon = 10;
+					int epsilon = 26;
 					velocityBase.X = diff.X > epsilon ? 1 : diff.X < -epsilon ? -1 : 0;
 					velocityBase.Y = diff.Y > epsilon ? 1 : diff.Y < -epsilon ? -1 : 0;
 					CanChangeDirection = false;
@@ -127,7 +133,7 @@ public partial class Soldier : Person
 
 		Vector2 velocity = velocityBase;
 		
-		if (State != PersonState.Attack && State != PersonState.Charging)
+		if (State != PersonState.Attack)
 		{
 			if (velocity != Vector2.Zero)
 			{
@@ -145,7 +151,7 @@ public partial class Soldier : Person
 
 		if (PlayerInstance.State == PersonState.Dead)
 		{
-			if (State != PersonState.Charging && State != PersonState.Attack)
+			if (State != PersonState.Attack)
 			{
 				if (Position.Y >= ScreenSize.Y - 220 || Position.Y <= ScreenSize.Y - 900)
 				{
@@ -208,6 +214,8 @@ public partial class Soldier : Person
 	// Called every frame. 'delta' is the elapsed time since the previous frame.
 	public override void _Process(double delta)
 	{
+		UpdateAnimationParameters();
+		
 		if (State == PersonState.Dead)
 		{
 			return;
@@ -231,13 +239,12 @@ public partial class Soldier : Person
 					HitCooldownTimer.Value = 0;
 					if (InCollision && CollisionVictim.State != PersonState.Dead)
 					{
-						GD.Print("Changed to charging");
+						//GD.Print("Changed to charging");
 						//AnimatedSprite2D.Play("idle");
-						ChangeState(PersonState.Charging);
+						ChangeState(PersonState.Attack);
 						return;
 					}
-
-					GD.Print("Hit cooldown?");
+					
 					ChangeState(PersonState.Idle);
 				});
 		}
