@@ -10,6 +10,7 @@ public Vector2 ScreenSize;
 
 public AnimatedSprite2D AnimatedSprite2D;
 public Floor Floor;
+private AnimationPlayer AnimationPlayer;
 
 public PersonState State { get; set; } = PersonState.Idle;
 
@@ -39,6 +40,7 @@ public override void _Ready()
 			AnimatedSprite2D.Play("Idle");
 		}
 	};
+	AnimationPlayer = GetParent().GetNode<AnimationPlayer>("Transition/AnimationPlayer");
 }
 
 public virtual void ChangeState(PersonState newState)
@@ -77,10 +79,20 @@ public virtual void OnStateEnter(PersonState state)
 			HitCooldownTimer = HitCooldown;
 			break;
 		case PersonState.Dead:
-			AnimatedSprite2D.Play("Death");
+			//AnimatedSprite2D.Play("Death");
+			Death();
 			break;
 	}
 }
+public async void Death()
+	{
+		AnimatedSprite2D.Play("Death");
+		await ToSignal(GetTree().CreateTimer(3.0f), SceneTreeTimer.SignalName.Timeout);
+		AnimationPlayer.Play("fade_in");
+		await ToSignal(AnimationPlayer, "animation_finished");
+
+		GetTree().ChangeSceneToFile("res://win_scene.tscn");
+	}
 
 public virtual void OnStateExit(PersonState state) { }
 
