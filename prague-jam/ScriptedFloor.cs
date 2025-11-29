@@ -2,7 +2,7 @@ using Godot;
 using System;
 using System.Collections.Generic;
 
-public partial class Floor : TileMapLayer
+public partial class ScriptedFloor : TileMapLayer
 {
 	const int _maxNotOutOfRangeCoordinateX = 113;
 	const int _maxNotOutOfRangeCoordinateY = 38;
@@ -42,7 +42,7 @@ public partial class Floor : TileMapLayer
 	public override void _Ready()
 	{
 		//GD.Seed(12345);
-		GetTiles(5);
+		GetTiles(500);
 		//for (int i = 0; i < 5; ++i) ClearLeastRecentLavaTile();
 	}
 }
