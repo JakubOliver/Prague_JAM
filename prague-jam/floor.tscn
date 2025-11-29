@@ -4,7 +4,7 @@
 [ext_resource type="Script" uid="uid://eethnr4oxvhj" path="res://Floor.cs" id="2_cgngl"]
 
 [sub_resource type="TileSetScenesCollectionSource" id="TileSetScenesCollectionSource_cgngl"]
-scenes/1/scene = ExtResource("1_oj3tl")
+scenes/0/scene = ExtResource("1_oj3tl")
 
 [sub_resource type="TileSet" id="TileSet_wd3ws"]
 sources/0 = SubResource("TileSetScenesCollectionSource_cgngl")

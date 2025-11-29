@@ -20,8 +20,6 @@ public partial class Floor : TileMapLayer
 		int x = GD.RandRange(0, _maxNotOutOfRangeCoordinateX);
 		int y = GD.RandRange(0, _maxNotOutOfRangeCoordinateY);
 		
-		GD.Print(x);
-		GD.Print(y);
 		SetLavaTile(new Vector2I(x, y));
 	}
 	public void ClearLeastRecentLavaTile()
@@ -38,8 +36,8 @@ public partial class Floor : TileMapLayer
 	
 	public override void _Ready()
 	{
-		GD.Seed(12345);
-		for (int i = 0; i < 10; ++i) GenerateRandomLavaTile();
-		for (int i = 0; i < 5; ++i) ClearLeastRecentLavaTile();
+		//GD.Seed(12345);
+		for (int i = 0; i < 5; ++i) GenerateRandomLavaTile();
+		//for (int i = 0; i < 5; ++i) ClearLeastRecentLavaTile();
 	}
 }
