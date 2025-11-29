@@ -115,8 +115,8 @@ public partial class Soldier : Person
 				if (CanChangeDirection)
 				{
 					GD.Print("Dir changed");
-					velocityBase.X = diff.X >= 0 ? 1 : -1;
-					velocityBase.Y = diff.Y >= 0 ? 1 : -1;
+					velocityBase.X = diff.X > 1 ? 1 : diff.X == 0 ? 0 : -1;
+					velocityBase.Y = diff.Y > 1 ? 1 : diff.Y == 0 ? 0 : -1;
 					CanChangeDirection = false;
 					LastDirectionChangeCooldown.Value = LastDirectionChange;
 				}
