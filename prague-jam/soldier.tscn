@@ -1,13 +1,30 @@
-[gd_scene load_steps=44 format=3 uid="uid://dn61nwubro2hg"]
+[gd_scene load_steps=49 format=3 uid="uid://dn61nwubro2hg"]
 
 [ext_resource type="Script" uid="uid://hwh1mgwj5m3a" path="res://Soldier.cs" id="1_ba3fx"]
 [ext_resource type="Texture2D" uid="uid://xs72p7ljnhw6" path="res://Sprites/Soldier/_Attack.png" id="2_ba3fx"]
+[ext_resource type="Texture2D" uid="uid://cwhu7tyoemx16" path="res://Sprites/Soldier/_Attack_Grey_Alternate.png" id="2_yk5gn"]
 [ext_resource type="Texture2D" uid="uid://cko3k0u31e37" path="res://Sprites/Soldier/_Idle.png" id="3_8swxs"]
 [ext_resource type="Texture2D" uid="uid://2flimphx1rrq" path="res://Sprites/Soldier/_Death.png" id="3_didp5"]
 [ext_resource type="Texture2D" uid="uid://detusqrrj5oca" path="res://Sprites/Soldier/_Hit.png" id="4_yk5gn"]
 [ext_resource type="Texture2D" uid="uid://cldcdwwkhxyde" path="res://Sprites/Soldier/_Run.png" id="6_n78w1"]
 
 [sub_resource type="CapsuleShape2D" id="CapsuleShape2D_8swxs"]
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_dv58j"]
+atlas = ExtResource("2_yk5gn")
+region = Rect2(0, 0, 120, 80)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_0a3qh"]
+atlas = ExtResource("2_yk5gn")
+region = Rect2(120, 0, 120, 80)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_fwjvv"]
+atlas = ExtResource("2_yk5gn")
+region = Rect2(240, 0, 120, 80)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_0flcc"]
+atlas = ExtResource("2_yk5gn")
+region = Rect2(360, 0, 120, 80)
 
 [sub_resource type="AtlasTexture" id="AtlasTexture_8swxs"]
 atlas = ExtResource("2_ba3fx")
@@ -153,6 +170,23 @@ region = Rect2(1080, 0, 120, 80)
 animations = [{
 "frames": [{
 "duration": 1.0,
+"texture": SubResource("AtlasTexture_dv58j")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_0a3qh")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_fwjvv")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_0flcc")
+}],
+"loop": false,
+"name": &"attack",
+"speed": 10.0
+}, {
+"frames": [{
+"duration": 1.0,
 "texture": SubResource("AtlasTexture_8swxs")
 }, {
 "duration": 1.0,
@@ -165,7 +199,7 @@ animations = [{
 "texture": SubResource("AtlasTexture_didp5")
 }],
 "loop": false,
-"name": &"attack",
+"name": &"attack-old",
 "speed": 10.0
 }, {
 "frames": [{
@@ -292,9 +326,12 @@ scale = Vector2(7, 7)
 shape = SubResource("CapsuleShape2D_8swxs")
 
 [node name="AnimatedSprite2D" type="AnimatedSprite2D" parent="."]
+position = Vector2(-0.99999994, 0)
 scale = Vector2(5, 5)
 sprite_frames = SubResource("SpriteFrames_8swxs")
-animation = &"idle"
+animation = &"attack"
+frame = 3
+frame_progress = 1.0
 
 [connection signal="area_entered" from="." to="." method="OnBodyEntered"]
 [connection signal="area_exited" from="." to="." method="OnBodyExited"]
