@@ -20,7 +20,7 @@ public partial class Intro : Node2D
 			AnimationPlayer.Play("fade_in");
 			await ToSignal(AnimationPlayer, "animation_finished");
 
-			GetTree().ChangeSceneToFile("res://main_scene.tscn");
+			GetTree().ChangeSceneToFile("res://intro_cut_scene.tscn");
 		}
 	}
 
