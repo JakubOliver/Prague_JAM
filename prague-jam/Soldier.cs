@@ -9,6 +9,12 @@ public partial class Soldier : Person
 
 	public const double AI_ATTACK_TIME_MAX = 1.5;
 	public double AIAttackTime = 0.0;
+	private void OnBodyEntered(Node2D body)
+	{
+		if (body is ITile || body is Gandalf)
+		{
+			return;
+		}
 
 	public override void _Ready()
 	{

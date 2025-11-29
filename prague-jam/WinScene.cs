@@ -1,12 +1,11 @@
 using Godot;
 using System;
 
-public partial class MainScene : Node2D
+public partial class WinScene : Node2D
 {
 	private AnimationPlayer AnimationPlayer;
-
 	// Called when the node enters the scene tree for the first time.
-	public override async void _Ready()
+	public async override void _Ready()
 	{
 		AnimationPlayer = GetNode<AnimationPlayer>("Transition/AnimationPlayer");
 		var rect = AnimationPlayer.GetParent().GetNode<ColorRect>("ColorRect");
@@ -15,11 +14,10 @@ public partial class MainScene : Node2D
 		await ToSignal(AnimationPlayer, "animation_finished");
 	}
 
-	
-
 	// Called every frame. 'delta' is the elapsed time since the previous frame.
 	public override void _Process(double delta)
 	{
-
+		
+		
 	}
 }

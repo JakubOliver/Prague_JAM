@@ -33,6 +33,7 @@ public partial class Player : Person{
 		Damage = 25;
 		ScreenSize = GetViewportRect().Size;
 		AnimatedSprite2D = GetNode<AnimatedSprite2D>("AnimatedSprite2D");
+		AnimationPlayer = GetParent().GetNode<AnimationPlayer>("Transition/AnimationPlayer");
 		AnimatedSprite2D.Play("idle");
 	}
 
