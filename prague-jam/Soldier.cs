@@ -43,7 +43,7 @@ public partial class Soldier : Person
 	{
 		if (InCollision && CollisionVictim.State != PersonState.Dead)
 		{
-			CollisionVictim.GetHit(Damage);
+			CollisionVictim.GetHit(Damage, Scale);
 		}
 		else
 		{

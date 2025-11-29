@@ -14,7 +14,7 @@ public interface IPerson
 	int Damage { get; set; }
 	PersonState State { get; set; }
 	void ChangeState(PersonState newState);
-	void GetHit(int damage);
+	void GetHit(int damage, Vector2 scale);
 	void HitSomeone();
 }
 
@@ -128,16 +128,19 @@ public abstract partial class Person : Area2D, IPerson, IState
 	{
 		if (InCollision)
 		{
-			CollisionVictim.GetHit(Damage);
+			CollisionVictim.GetHit(Damage, Scale);
 		}
 	}
 	
-	public virtual void GetHit(int damage)
+	public virtual void GetHit(int damage, Vector2 scale)
 	{
 		if (!InCollision || State == PersonState.Dead || State == PersonState.Hit)
 		{
 			return;
 		}
+
+		scale.X = -scale.X;
+		Scale = scale;
 		
 		GD.Print("Hit");
 		Health -= damage;
