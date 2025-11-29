@@ -5,6 +5,8 @@ using System.Diagnostics;
 
 
 public partial class Player : Person{
+	private bool _leftOrientation = false;
+	
 	[Signal]
 	public delegate void HitEventHandler();
 
@@ -39,17 +41,17 @@ public partial class Player : Person{
 	private void ProcessInput(double delta)
 	{
 		Vector2 direction = Vector2.Zero;
-		bool swapSize = false;
 
 		if (Input.IsActionPressed("move_right"))
 		{
 			direction.X += 1;
+			_leftOrientation = false;
 		} 
 		
 		if (Input.IsActionPressed("move_left"))
 		{
 			direction.X -= 1;
-			swapSize = true;
+			_leftOrientation = true;
 		}
 
 		if (Input.IsActionPressed("move_down"))
@@ -62,7 +64,7 @@ public partial class Player : Person{
 			direction.Y -= 1;
 		}
 
-		if (swapSize)
+		if (_leftOrientation) 
 		{
 			Scale = new Vector2(-1, 1);
 		}

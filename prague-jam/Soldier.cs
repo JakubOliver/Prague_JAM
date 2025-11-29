@@ -24,26 +24,26 @@ public partial class Soldier : Person
 	}
 
 	public void OnBodyEntered(Area2D area)
-    {
+	{
 		if (area is ITile) { 
 			return; 
 		}
 
-        InCollision = true;
+		InCollision = true;
 		GD.Print("Collision with soldier");
 
 		AIAttackTime = AI_ATTACK_TIME_MAX / 2;
-    }
+	}
 
 	public void OnBodyExited(Area2D area)
-    {
-        InCollision = false;
-    }
+	{
+		InCollision = false;
+	}
 
 	private void ProcessAI(double delta)
-    {
+	{
 		if (InCollision || Stage == Stages.Attack	)
-        {
+		{
 			AIAttackTime -= delta;
 
 			if (AIAttackTime <= 0)
@@ -52,9 +52,9 @@ public partial class Soldier : Person
 				AIAttackTime = AI_ATTACK_TIME_MAX;
 			}
 			return;
-        }
+		}
 
-        Vector2 direction = (Position - player.Position).Normalized();
+		Vector2 direction = (Position - player.Position).Normalized();
 
 		Position -= direction * Speed * (float)delta;
 
@@ -75,7 +75,7 @@ public partial class Soldier : Person
 		{
 			Scale = new Vector2(1, 1);
 		}
-    }
+	}
 
 	public override void _Process(double delta)
 	{
