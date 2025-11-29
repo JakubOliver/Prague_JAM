@@ -5,9 +5,10 @@ using System;
 
 public partial class Soldier : Person
 {
-	[Signal]
-	public delegate void HitEventHandler();
+	Player player;
 
+	public const double AI_ATTACK_TIME_MAX = 1.5;
+	public double AIAttackTime = 0.0;
 	private void OnBodyEntered(Node2D body)
 	{
 		if (body is ITile || body is Gandalf)
@@ -15,205 +16,82 @@ public partial class Soldier : Person
 			return;
 		}
 
-		InCollision = true;
-		CollisionVictim = (IPerson)body;
-		if (CollisionVictim.State != PersonState.Dead)
-		{
-			ChangeState(PersonState.Charging);
-		}
-	}
-	
-	private void OnBodyExited(Node2D body) {
-		GD.Print("OnBodyExited");
-		InCollision = false;
-		CollisionVictim = null;
-		if (State != PersonState.Hit)
-		{
-			ChangeState(PersonState.Idle);
-		}
-	}
-	
-	public override void OnStateEnter(PersonState state)
+	public override void _Ready()
 	{
-		base.OnStateEnter(state);
-		switch (state)
-		{
-			case PersonState.Attack:
-				if (CollisionVictim.State != PersonState.Dead)
-				{
-					ChangeState(PersonState.Charging);
-				}
-				else
-				{
-					ChangeState(PersonState.Idle);
-				}
+		Health = 200;
+		Speed = 200;
+		Damage = 20;
 
-				break;
-		}
+		player = GetParent().GetNode<Player>("Player");
+		InCollisionWith = player;
+		ScreenSize = GetViewportRect().Size;
+		AnimatedSprite2D = GetNode<AnimatedSprite2D>("AnimatedSprite2D");
+		AnimatedSprite2D.Play("idle");
 	}
-	
-	public override void HitSomeone()
-	{
-		if (InCollision && CollisionVictim.State != PersonState.Dead)
+
+	public void OnBodyEntered(Area2D area)
+    {
+		if (area is ITile) { 
+			return; 
+		}
+
+        InCollision = true;
+		GD.Print("Collision with soldier");
+
+		AIAttackTime = AI_ATTACK_TIME_MAX / 2;
+    }
+
+	public void OnBodyExited(Area2D area)
+    {
+        InCollision = false;
+    }
+
+	private void ProcessAI(double delta)
+    {
+		if (InCollision || Stage == Stages.Attack	)
+        {
+			AIAttackTime -= delta;
+
+			if (AIAttackTime <= 0)
+			{
+				DoHit(player);
+				AIAttackTime = AI_ATTACK_TIME_MAX;
+			}
+			return;
+        }
+
+        Vector2 direction = (Position - player.Position).Normalized();
+
+		Position -= direction * Speed * (float)delta;
+
+		if (direction.Length() > 0)
 		{
-			CollisionVictim.GetHit(Damage, Scale);
+			ChangeAnimation(Stages.Run);
 		}
 		else
 		{
-			ChangeState(PersonState.Idle);
+			ChangeAnimation(Stages.Idle);
 		}
-	}
-	
-	// Called when the node enters the scene tree for the first time.
-	public override void _Ready()
-	{
-		Speed = 400;
-		PersonName = "Soldier";
-		
-		AttackCooldown = 0.5;
-		
-		ScreenSize = GetViewportRect().Size;
-		
-		AnimatedSprite2D = GetNode<AnimatedSprite2D>("AnimatedSprite2D");
-		AnimatedSprite2D.Play("idle");
-		AnimatedSprite2D.SetAnimation("idle");
-		AnimatedSprite2D.AnimationFinished += () =>
+
+		if (direction.X > 0)
 		{
-			if (State != PersonState.Dead && State != PersonState.Attack && State != PersonState.Charging)
-			{
-				AnimatedSprite2D.Play("idle");
-			}
-		};
-	}
-
-	private Vector2 velocityBase = new Vector2(1, 1);
-
-	public void Move(double delta)
-	{
-		Vector2 velocity = velocityBase;
-		
-		if (State != PersonState.Attack && State != PersonState.Charging)
+			Scale = new Vector2(-1, 1);
+		}
+		else
 		{
-			if (velocity != Vector2.Zero)
-			{
-				ChangeState(PersonState.Running);
-				AnimatedSprite2D.Play("run");
-			}
-			else
-			{
-				ChangeState(PersonState.Idle);
-				AnimatedSprite2D.Play("idle");
-			}
+			Scale = new Vector2(1, 1);
 		}
-		
-		if (velocity.Length() > 0){
-			velocity = velocity.Normalized() * Speed;
-		}
+    }
 
-		if (State != PersonState.Charging && State != PersonState.Attack)
-		{
-			if (Position.Y >= ScreenSize.Y - 220 || Position.Y <= ScreenSize.Y - 900)
-			{
-				if (Position.Y >= ScreenSize.Y - 220)
-				{
-					Position = new Vector2(
-						x: Position.X,
-						y: ScreenSize.Y - 230
-						);
-				}
-				if (Position.Y <= ScreenSize.Y - 900)
-				{
-					Position = new Vector2(
-						x: Position.X,
-						y: ScreenSize.Y - 890
-					);
-				}
-				velocityBase.X = velocityBase.X;
-				velocityBase.Y = -velocityBase.Y;
-			}
-
-			if (Position.X <= 0 || Position.X >= ScreenSize.X)
-			{
-				if (Position.X <= 0)
-				{
-					Position = new Vector2(
-						x: 10,
-						y: Position.Y
-					);
-				}
-
-				if (Position.X >= ScreenSize.X)
-				{
-					Position = new Vector2(
-						x: ScreenSize.X-10,
-						y: Position.Y
-					);
-				}
-				
-				velocityBase.X = -velocityBase.X;
-				velocityBase.Y = velocityBase.Y;
-			}
-			
-			Position += velocity * (float)delta;
-			Position = new Vector2(
-				x: Mathf.Clamp(Position.X, 0, ScreenSize.X),
-				y: Mathf.Clamp(Position.Y, ScreenSize.Y - 900, ScreenSize.Y - 220)
-			);
-
-			Vector2 scale = new Vector2(velocityBase.X, 1);
-			
-			Scale = scale;
-		}
-
-
-	}
-
-	// Called every frame. 'delta' is the elapsed time since the previous frame.
 	public override void _Process(double delta)
 	{
-		if (State == PersonState.Dead)
+		if (Stage == Stages.Hit)
 		{
-			return;
+			ProcessHitCoolDown(delta);
 		}
-		
-		Move(delta);
-		
-		if (CooldownTimer > 0 && State == PersonState.Charging)
-		{
-			if (CooldownTimer - delta <= 0)
-			{
-				CooldownTimer = 0;
-				ChangeState(PersonState.Attack);
-			}
-			else
-			{
-				CooldownTimer -= delta;
-			}
-		}
-		
-		if (HitCooldownTimer > 0)
-		{
-			if (HitCooldownTimer - delta <= 0)
-			{
-				HitCooldownTimer = 0;
-				if (InCollision && CollisionVictim.State != PersonState.Dead)
-				{
-					GD.Print("Changed to charging");
-					AnimatedSprite2D.Play("idle");
-					ChangeState(PersonState.Charging);
-					return;
-				}
 
-				GD.Print("Hit cooldown?");
-				ChangeState(PersonState.Idle);
-			}
-			else
-			{
-				HitCooldownTimer -= delta;
-			}
-		}
-		
-		
-		
+		if (Stage == Stages.Dead || Stage == Stages.Hit){ return; }
+
+		ProcessAI(delta);
 	}
 }
