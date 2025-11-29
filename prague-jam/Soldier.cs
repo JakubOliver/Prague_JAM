@@ -3,70 +3,30 @@ using System;
 
 
 
-public partial class Soldier : Area2D, IPerson, IState
+public partial class Soldier : Person
 {
 	[Signal]
 	public delegate void HitEventHandler();
-
-	private AnimatedSprite2D _animatedSprite2D;
-	
-	public int Health { get; set; } = 150;
-	public int Damage { get; set; } = 20;
-	
-	public void ChangeState(PersonState newState)
-	{
-		if (State == PersonState.Dead)
-		{
-			return;
-		}
-		OnStateExit(State);
-		State = newState;
-		OnStateEnter(newState);
-	}
-	
-	public PersonState State { get; set; } = PersonState.Idle;
-
-	public double Cooldown { get; set; } = 1;
-	public double HitCooldown { get; set; } = 0.1;
-
-	public double CooldownTimer { get; set; } = 0.0;
-	
-	public double HitCooldownTimer { get; set; } = 0.0;
-	
-	
-	private bool _inCollision = false;
-	private IPerson _collisionVictim = null;
 	
 	private void OnBodyEntered(Node2D body) {
-		_inCollision = true;
-		_collisionVictim = (IPerson)body;
+		InCollision = true;
+		CollisionVictim = (IPerson)body;
 		ChangeState(PersonState.Charging);
 	}
 	
 	private void OnBodyExited(Node2D body) {
 		GD.Print("OnBodyExited");
-		_inCollision = false;
-		_collisionVictim = null;
+		InCollision = false;
+		CollisionVictim = null;
 	}
 	
-	public void OnStateEnter(PersonState state)
+	public override void OnStateEnter(PersonState state)
 	{
+		base.OnStateEnter(state);
 		switch (state)
 		{
-			case PersonState.Idle:
-				GD.Print("Changed to idle!");
-				_animatedSprite2D.Play("idle");
-				break;
-			case PersonState.Running:
-				_animatedSprite2D.Play("run");
-				break;
-			case PersonState.Charging:
-				CooldownTimer = Cooldown;
-				break;
 			case PersonState.Attack:
-				HitSomeone();
-				_animatedSprite2D.Play("attack");
-				if (_collisionVictim.State != PersonState.Dead)
+				if (CollisionVictim.State != PersonState.Dead)
 				{
 					ChangeState(PersonState.Charging);
 				}
@@ -76,83 +36,14 @@ public partial class Soldier : Area2D, IPerson, IState
 				}
 
 				break;
-			case PersonState.Hit:
-				_animatedSprite2D.Play("hit");
-				
-				HitCooldownTimer = HitCooldown;
-				
-				if (Health <= 0)
-				{
-					ChangeState(PersonState.Dead);
-					return;
-				}
-				GD.Print("Change");
-				break;
-			case PersonState.Dead:
-				_animatedSprite2D.Play("death");
-				break;
 		}
 	}
 	
-	public void OnStateDuration(double delta)
+	public override void HitSomeone()
 	{
-		switch (State)
+		if (InCollision && CollisionVictim.State != PersonState.Dead)
 		{
-			case PersonState.Idle:
-				_animatedSprite2D.Play("idle");
-				break;
-			case PersonState.Running:
-				_animatedSprite2D.Play("run");
-				break;
-			case PersonState.Charging:
-				break;
-			case PersonState.Attack:
-				_animatedSprite2D.Play("attack");
-				break;
-			case PersonState.Hit:
-				break;
-			case PersonState.Dead:
-				break;
-		}
-	}
-	
-	public void OnStateExit(PersonState state)
-	{
-		switch (state)
-		{
-			case PersonState.Idle:
-				break;
-			case PersonState.Running:
-				break;
-			case PersonState.Charging:
-				break;
-			case PersonState.Attack:
-				break;
-			case PersonState.Hit:
-				break;
-			case PersonState.Dead:
-				break;
-		}
-	}
-
-	public void GetHit(int damage)
-	{
-		if (!_inCollision || State == PersonState.Dead || State == PersonState.Hit)
-		{
-			return;
-		}
-		
-		GD.Print("Hit");
-		Health -= damage;
-		GD.Print("Health: " + Health);
-		ChangeState(PersonState.Hit);
-	}
-	
-	public void HitSomeone()
-	{
-		if (_inCollision && _collisionVictim.State != PersonState.Dead)
-		{
-			_collisionVictim.GetHit(Damage);
+			CollisionVictim.GetHit(Damage);
 		}
 		else
 		{
@@ -163,14 +54,18 @@ public partial class Soldier : Area2D, IPerson, IState
 	// Called when the node enters the scene tree for the first time.
 	public override void _Ready()
 	{
-		_animatedSprite2D = GetNode<AnimatedSprite2D>("AnimatedSprite2D");
-		_animatedSprite2D.Play("idle");
-		_animatedSprite2D.AnimationFinished += () =>
+		AttackCooldown = 0.5;
+		
+		
+		AnimatedSprite2D = GetNode<AnimatedSprite2D>("AnimatedSprite2D");
+		AnimatedSprite2D.Play("idle");
+		AnimatedSprite2D.SetAnimation("idle");
+		AnimatedSprite2D.AnimationFinished += () =>
 		{
 			if (State != PersonState.Dead && State != PersonState.Attack && State != PersonState.Charging)
 			{
 				GD.Print("Idle again huh");
-				_animatedSprite2D.Play("idle");
+				AnimatedSprite2D.Play("idle");
 			}
 		};
 	}
@@ -201,10 +96,10 @@ public partial class Soldier : Area2D, IPerson, IState
 			if (HitCooldownTimer - delta <= 0)
 			{
 				HitCooldownTimer = 0;
-				if (_inCollision && _collisionVictim.State != PersonState.Dead)
+				if (InCollision && CollisionVictim.State != PersonState.Dead)
 				{
 					GD.Print("Changed to charging");
-					_animatedSprite2D.Play("idle");
+					AnimatedSprite2D.Play("idle");
 					ChangeState(PersonState.Charging);
 					return;
 				}
