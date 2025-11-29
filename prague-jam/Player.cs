@@ -186,7 +186,7 @@ public partial class Player : Person
 		if (body is ITile)
 		{
 			GD.Print("Collided with title");
-			GetHit(Health);
+			GetHit(Health, Scale);
 
 			GD.Print(Health);
 			return;
