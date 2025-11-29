@@ -1,10 +1,11 @@
-[gd_scene load_steps=6 format=3 uid="uid://c2sxk6hyywpva"]
+[gd_scene load_steps=7 format=3 uid="uid://c2sxk6hyywpva"]
 
 [ext_resource type="PackedScene" uid="uid://c0my88klmnsl4" path="res://player.tscn" id="1_0f027"]
 [ext_resource type="Script" uid="uid://djnq517ovxygn" path="res://MainScene.cs" id="1_gyfs4"]
 [ext_resource type="PackedScene" uid="uid://dn61nwubro2hg" path="res://soldier.tscn" id="2_2c62f"]
 [ext_resource type="Texture2D" uid="uid://blxtxvypltbbm" path="res://Sprites/Arena_background/arena1.png" id="4_d5x1h"]
 [ext_resource type="PackedScene" uid="uid://cxolsykkm1i14" path="res://floor.tscn" id="5_8mm7a"]
+[ext_resource type="PackedScene" uid="uid://dqwel2iiwd31t" path="res://transition.tscn" id="6_hq1ik"]
 
 [node name="MainScene" type="Node2D"]
 script = ExtResource("1_gyfs4")
@@ -12,6 +13,7 @@ script = ExtResource("1_gyfs4")
 [node name="Player" parent="." instance=ExtResource("1_0f027")]
 z_index = 2
 position = Vector2(494, 700)
+Speed = null
 
 [node name="Soldier" parent="." instance=ExtResource("2_2c62f")]
 z_index = 2
@@ -24,3 +26,5 @@ texture = ExtResource("4_d5x1h")
 [node name="Floor" parent="." instance=ExtResource("5_8mm7a")]
 position = Vector2(734, 544)
 tile_map_data = PackedByteArray(0, 0, 3, 0, 3, 0, 0, 0, 0, 0, 0, 0, 1, 0, 253, 255, 11, 0, 0, 0, 0, 0, 0, 0, 1, 0, 44, 0, 9, 0, 0, 0, 0, 0, 0, 0, 1, 0, 41, 0, 253, 255, 0, 0, 0, 0, 0, 0, 1, 0)
+
+[node name="Transition" parent="." instance=ExtResource("6_hq1ik")]
