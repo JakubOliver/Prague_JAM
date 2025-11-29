@@ -4,17 +4,28 @@ using System;
 public partial class intro_cutscene : Node2D
 {
 	public AnimatedSprite2D AnimatedSpriteWizard;
+	private AnimationPlayer AnimationPlayer;
 	public ScriptedFloor ScriptedFloor;
 	private bool cutscene_started = false;
 	private bool cutscene_finished = false;
 	// Called when the node enters the scene tree for the first time.
-	public override void _Ready()
+	public override async void _Ready()
 	{
 		
+		AnimationPlayer = GetNode<AnimationPlayer>("Transition/AnimationPlayer");
+		var rect = AnimationPlayer.GetParent().GetNode<ColorRect>("ColorRect");
+		rect.Color = new Color(0, 0, 0, 1.0f);
 		AnimatedSpriteWizard = GetNode<AnimatedSprite2D>("Wizard/AnimatedSprite2D");
+		AnimatedSpriteWizard.Play("Idle");
+		AnimationPlayer.Play("fade_out");
+		await ToSignal(AnimationPlayer, "animation_finished");
+		
+		
 		ScriptedFloor = GetNode<ScriptedFloor>("Floor");
 		
-		AnimatedSpriteWizard.Play("Idle");
+		
+		
+		
 		
 		//await ToSignal(AnimatedSpriteWizard, AnimatedSprite2D.SignalName.AnimationFinished);
 		

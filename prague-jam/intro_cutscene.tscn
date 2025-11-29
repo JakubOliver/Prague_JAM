@@ -1,4 +1,4 @@
-[gd_scene load_steps=23 format=3 uid="uid://bovsxxe0heekc"]
+[gd_scene load_steps=24 format=3 uid="uid://bovsxxe0heekc"]
 
 [ext_resource type="Script" uid="uid://dgyx2ysl06stc" path="res://intro_cutscene.cs" id="1_87rbk"]
 [ext_resource type="PackedScene" uid="uid://c0my88klmnsl4" path="res://player.tscn" id="1_rlq26"]
@@ -7,6 +7,7 @@
 [ext_resource type="Texture2D" uid="uid://blxtxvypltbbm" path="res://Sprites/Arena_background/arena1.png" id="4_660lu"]
 [ext_resource type="PackedScene" uid="uid://cxolsykkm1i14" path="res://floor.tscn" id="5_suuxw"]
 [ext_resource type="Script" uid="uid://dgtmnqpy0ka5m" path="res://ScriptedFloor.cs" id="6_suuxw"]
+[ext_resource type="PackedScene" uid="uid://dqwel2iiwd31t" path="res://transition.tscn" id="8_usyqk"]
 
 [sub_resource type="AtlasTexture" id="AtlasTexture_660lu"]
 atlas = ExtResource("2_pcp2w")
@@ -120,10 +121,11 @@ animations = [{
 }]
 
 [node name="intro_cutscene" type="Node2D"]
+process_priority = -1
 script = ExtResource("1_87rbk")
 
 [node name="Player" parent="." instance=ExtResource("1_rlq26")]
-z_index = 2
+z_index = 1
 position = Vector2(494, 700)
 Speed = null
 
@@ -144,3 +146,6 @@ texture = ExtResource("4_660lu")
 [node name="Floor" parent="." instance=ExtResource("5_suuxw")]
 position = Vector2(2, 358)
 script = ExtResource("6_suuxw")
+
+[node name="Transition" parent="." instance=ExtResource("8_usyqk")]
+z_index = 4
