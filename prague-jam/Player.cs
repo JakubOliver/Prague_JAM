@@ -61,8 +61,8 @@ public partial class Player : Area2D, IPerson, IState
 				_animatedSprite2D.Play("attack");
 				break;
 			case PersonState.Hit:
+				GD.Print("Hit");
 				_animatedSprite2D.Play("hit");
-				
 				HitCooldownTimer = Cooldown;
 				
 				if (Health <= 0)
@@ -161,7 +161,7 @@ public partial class Player : Area2D, IPerson, IState
 		_animatedSprite2D.Play("idle");
 		_animatedSprite2D.AnimationFinished += () =>
 		{
-			if (State != PersonState.Dead && State != PersonState.Attack)
+			if (State != PersonState.Dead)
 			{
 				_animatedSprite2D.Play("idle");
 			}
