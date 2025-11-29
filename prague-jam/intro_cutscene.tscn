@@ -1,0 +1,145 @@
+[gd_scene load_steps=22 format=3 uid="uid://bovsxxe0heekc"]
+
+[ext_resource type="PackedScene" uid="uid://c0my88klmnsl4" path="res://player.tscn" id="1_rlq26"]
+[ext_resource type="Texture2D" uid="uid://c5cnoyci5l1kx" path="res://Sprites/Gandalf/Attack1.png" id="2_pcp2w"]
+[ext_resource type="Texture2D" uid="uid://dl6jbj6uto5vi" path="res://Sprites/Gandalf/Idle.png" id="3_b82mh"]
+[ext_resource type="Texture2D" uid="uid://blxtxvypltbbm" path="res://Sprites/Arena_background/arena1.png" id="4_660lu"]
+[ext_resource type="PackedScene" uid="uid://cxolsykkm1i14" path="res://floor.tscn" id="5_suuxw"]
+[ext_resource type="Script" uid="uid://dgtmnqpy0ka5m" path="res://ScriptedFloor.cs" id="6_suuxw"]
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_660lu"]
+atlas = ExtResource("2_pcp2w")
+region = Rect2(0, 0, 231, 190)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_suuxw"]
+atlas = ExtResource("2_pcp2w")
+region = Rect2(231, 0, 231, 190)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_87rbk"]
+atlas = ExtResource("2_pcp2w")
+region = Rect2(462, 0, 231, 190)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_usyqk"]
+atlas = ExtResource("2_pcp2w")
+region = Rect2(693, 0, 231, 190)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_dhk5x"]
+atlas = ExtResource("2_pcp2w")
+region = Rect2(924, 0, 231, 190)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_qyyv5"]
+atlas = ExtResource("2_pcp2w")
+region = Rect2(1155, 0, 231, 190)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_8u21e"]
+atlas = ExtResource("2_pcp2w")
+region = Rect2(1386, 0, 231, 190)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_6idgj"]
+atlas = ExtResource("2_pcp2w")
+region = Rect2(1617, 0, 231, 190)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_3m3i7"]
+atlas = ExtResource("3_b82mh")
+region = Rect2(0, 0, 231, 190)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_7p75p"]
+atlas = ExtResource("3_b82mh")
+region = Rect2(231, 0, 231, 190)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_rvxi5"]
+atlas = ExtResource("3_b82mh")
+region = Rect2(462, 0, 231, 190)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_ltqx2"]
+atlas = ExtResource("3_b82mh")
+region = Rect2(693, 0, 231, 190)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_vi1a5"]
+atlas = ExtResource("3_b82mh")
+region = Rect2(924, 0, 231, 190)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_edr3h"]
+atlas = ExtResource("3_b82mh")
+region = Rect2(1155, 0, 231, 190)
+
+[sub_resource type="SpriteFrames" id="SpriteFrames_xigbg"]
+animations = [{
+"frames": [{
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_660lu")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_suuxw")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_87rbk")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_usyqk")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_dhk5x")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_qyyv5")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_8u21e")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_6idgj")
+}],
+"loop": true,
+"name": &"Attack",
+"speed": 8.0
+}, {
+"frames": [{
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_3m3i7")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_7p75p")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_rvxi5")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_ltqx2")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_vi1a5")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_edr3h")
+}],
+"loop": true,
+"name": &"Idle",
+"speed": 8.0
+}]
+
+[node name="Node2D" type="Node2D"]
+
+[node name="Player" parent="." instance=ExtResource("1_rlq26")]
+z_index = 2
+position = Vector2(494, 700)
+Speed = null
+
+[node name="Wizard" type="Area2D" parent="."]
+z_index = 1
+position = Vector2(4880, -1235)
+scale = Vector2(-2.5, 2.5)
+
+[node name="AnimatedSprite2D" type="AnimatedSprite2D" parent="Wizard"]
+position = Vector2(1398.8, 820.39996)
+sprite_frames = SubResource("SpriteFrames_xigbg")
+animation = &"Attack"
+frame_progress = 0.32591307
+
+[node name="Sprite2D" type="Sprite2D" parent="."]
+position = Vector2(960, 540)
+texture = ExtResource("4_660lu")
+
+[node name="Floor" parent="." instance=ExtResource("5_suuxw")]
+position = Vector2(2, 358)
+script = ExtResource("6_suuxw")
