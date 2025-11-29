@@ -1,4 +1,4 @@
-[gd_scene load_steps=7 format=3 uid="uid://c2sxk6hyywpva"]
+[gd_scene load_steps=9 format=3 uid="uid://c2sxk6hyywpva"]
 
 [ext_resource type="PackedScene" uid="uid://c0my88klmnsl4" path="res://player.tscn" id="1_0f027"]
 [ext_resource type="Script" uid="uid://djnq517ovxygn" path="res://MainScene.cs" id="1_gyfs4"]
@@ -6,6 +6,8 @@
 [ext_resource type="Texture2D" uid="uid://blxtxvypltbbm" path="res://Sprites/Arena_background/arena1.png" id="4_d5x1h"]
 [ext_resource type="PackedScene" uid="uid://cxolsykkm1i14" path="res://floor.tscn" id="5_8mm7a"]
 [ext_resource type="PackedScene" uid="uid://dqwel2iiwd31t" path="res://transition.tscn" id="6_hq1ik"]
+[ext_resource type="PackedScene" uid="uid://br4i750u0s5u0" path="res://wizard.tscn" id="7_nfk4m"]
+[ext_resource type="Script" uid="uid://cq6m546loh8p2" path="res://Wizard.cs" id="8_66tet"]
 
 [node name="MainScene" type="Node2D"]
 z_index = -1
@@ -27,3 +29,8 @@ texture = ExtResource("4_d5x1h")
 position = Vector2(2, 358)
 
 [node name="Transition" parent="." instance=ExtResource("6_hq1ik")]
+z_index = 10
+
+[node name="Wizard" parent="." instance=ExtResource("7_nfk4m")]
+position = Vector2(1696.9999, 738.99994)
+script = ExtResource("8_66tet")

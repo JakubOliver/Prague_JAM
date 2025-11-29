@@ -9,6 +9,7 @@ public partial class IntroCutScene : Node2D
 	public ScriptedFloor ScriptedFloor;
 	private bool cutscene_started = false;
 	private bool cutscene_finished = false;
+	private bool cutscene_cleanup_executed = false;
 	// Called when the node enters the scene tree for the first time.
 	public override async void _Ready()
 	{
@@ -24,10 +25,6 @@ public partial class IntroCutScene : Node2D
 		
 		
 		ScriptedFloor = GetNode<ScriptedFloor>("Floor");
-		
-		
-		
-		
 		
 		//await ToSignal(AnimatedSpriteWizard, AnimatedSprite2D.SignalName.AnimationFinished);
 		
@@ -49,8 +46,10 @@ public partial class IntroCutScene : Node2D
 			cutscene();
 			cutscene_started = true;
 		}
-		if (cutscene_finished)
+
+		if (cutscene_finished && !cutscene_cleanup_executed)
 		{
+			cutscene_cleanup_executed = true;
 			AnimatedSpriteWizard.Play("idle");
 			await ToSignal(GetTree().CreateTimer(1.0f), SceneTreeTimer.SignalName.Timeout);
 			SpeechBubble.Visible = true;

@@ -36,6 +36,7 @@ public partial class Player : Person{
 		ScreenSize = GetViewportRect().Size;
 		AnimatedSprite2D = GetNode<AnimatedSprite2D>("AnimatedSprite2D");
 		AnimatedSprite2D.Play("idle");
+		GetTransition();
 	}
 
 	private void ProcessInput(double delta)
