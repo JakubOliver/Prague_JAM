@@ -47,9 +47,10 @@ public partial class Wizard : Person
 				{
 					floor.GenerateRandomLavaTile();
 				}
-				AnimatedSprite2D.Play("idle");
+				
 				
 			};
+			AnimatedSprite2D.Play("idle");
 		}
 
 		if (FaitCoolDown <= 0)
