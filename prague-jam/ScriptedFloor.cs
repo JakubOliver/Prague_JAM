@@ -34,7 +34,7 @@ public partial class ScriptedFloor : TileMapLayer
 			SetLavaTile(new Vector2I(x, y));
 	}	
 	
-	private void GetTiles(int value)
+	public void GetTiles(int value)
 	{
 		for (int i = 0; i < value; ++i) GenerateRandomLavaTile();
 	}
@@ -42,7 +42,7 @@ public partial class ScriptedFloor : TileMapLayer
 	public override void _Ready()
 	{
 		//GD.Seed(12345);
-		GetTiles(500);
+		//GetTiles(500);
 		//for (int i = 0; i < 5; ++i) ClearLeastRecentLavaTile();
 	}
 }

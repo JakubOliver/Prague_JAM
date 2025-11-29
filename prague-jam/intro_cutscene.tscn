@@ -1,5 +1,6 @@
-[gd_scene load_steps=22 format=3 uid="uid://bovsxxe0heekc"]
+[gd_scene load_steps=23 format=3 uid="uid://bovsxxe0heekc"]
 
+[ext_resource type="Script" uid="uid://dgyx2ysl06stc" path="res://intro_cutscene.cs" id="1_87rbk"]
 [ext_resource type="PackedScene" uid="uid://c0my88klmnsl4" path="res://player.tscn" id="1_rlq26"]
 [ext_resource type="Texture2D" uid="uid://c5cnoyci5l1kx" path="res://Sprites/Gandalf/Attack1.png" id="2_pcp2w"]
 [ext_resource type="Texture2D" uid="uid://dl6jbj6uto5vi" path="res://Sprites/Gandalf/Idle.png" id="3_b82mh"]
@@ -90,7 +91,7 @@ animations = [{
 "duration": 1.0,
 "texture": SubResource("AtlasTexture_6idgj")
 }],
-"loop": true,
+"loop": false,
 "name": &"Attack",
 "speed": 8.0
 }, {
@@ -118,7 +119,8 @@ animations = [{
 "speed": 8.0
 }]
 
-[node name="Node2D" type="Node2D"]
+[node name="intro_cutscene" type="Node2D"]
+script = ExtResource("1_87rbk")
 
 [node name="Player" parent="." instance=ExtResource("1_rlq26")]
 z_index = 2
@@ -134,7 +136,6 @@ scale = Vector2(-2.5, 2.5)
 position = Vector2(1398.8, 820.39996)
 sprite_frames = SubResource("SpriteFrames_xigbg")
 animation = &"Attack"
-frame_progress = 0.32591307
 
 [node name="Sprite2D" type="Sprite2D" parent="."]
 position = Vector2(960, 540)
