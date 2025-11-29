@@ -25,6 +25,9 @@ public enum PersonState
 
 public abstract partial class Person : Area2D, IPerson, IState
 {
+	[Signal]
+	public delegate void HitEventHandler();
+
 	[Export]	
 	public int Speed { get; set; } = 400;
 	public Vector2 ScreenSize;
@@ -170,6 +173,12 @@ public partial class Player : Person
 {
 	private void OnBodyEntered(Node2D body)
 	{
+		if (body is ITile)
+		{
+			GD.Print("Collided with title");
+			return;
+		}
+
 		InCollision = true;
 		CollisionVictim = (IPerson)body;
 		//ChangeState(PersonState.Charging);
