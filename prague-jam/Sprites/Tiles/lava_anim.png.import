@@ -2,16 +2,16 @@
 
 importer="texture"
 type="CompressedTexture2D"
-uid="uid://dix7p1lp31vxx"
-path="res://.godot/imported/soldier_block.png-000291b4e171ce713742b1e211f486ac.ctex"
+uid="uid://doahsntxoh5tt"
+path="res://.godot/imported/lava_anim.png-d8532605c818087945e7cf935a4a21b1.ctex"
 metadata={
 "vram_texture": false
 }
 
 [deps]
 
-source_file="res://Sprites/Soldier/soldier_block.png"
-dest_files=["res://.godot/imported/soldier_block.png-000291b4e171ce713742b1e211f486ac.ctex"]
+source_file="res://Sprites/Tiles/lava_anim.png"
+dest_files=["res://.godot/imported/lava_anim.png-d8532605c818087945e7cf935a4a21b1.ctex"]
 
 [params]
 
