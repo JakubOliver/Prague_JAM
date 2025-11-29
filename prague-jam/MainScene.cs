@@ -9,8 +9,8 @@ public partial class MainScene : Node2D
 	public override void _Ready()
 	{
 		AnimationPlayer = GetNode<AnimationPlayer>("Transition/AnimationPlayer");
-		//AnimationPlayer.get_parent().get_node("ColorRect").modulate = new Color(255, 255, 255, 1);
-		AnimationPlayer.GetParent().GetNode<ColorRect>("ColorRect").Modulate = new Color(0, 0, 0, 1);
+		//AnimationPlayer.get_parent().get_node("ColorRect")1.modulate = new Color(255, 255, 255, 1);
+		AnimationPlayer.GetParent().GetNode<ColorRect>("ColorRect").Modulate = new Color(0, 0, 0, 0);
 		AnimationPlayer.Play("fade_out");
 	}
 
