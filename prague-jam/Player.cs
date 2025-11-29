@@ -176,15 +176,21 @@ public partial class Player : Person
 {
 	private void OnBodyEntered(Node2D body)
 	{
+		InCollision = true;
+		if (body is IPerson)
+		{
+			CollisionVictim = (IPerson)body;
+		//ChangeState(PersonState.Charging);
+		}
+
 		if (body is ITile)
 		{
 			GD.Print("Collided with title");
+			GetHit(Health);
+
+			GD.Print(Health);
 			return;
 		}
-
-		InCollision = true;
-		CollisionVictim = (IPerson)body;
-		//ChangeState(PersonState.Charging);
 	}
 	
 	private void OnBodyExited(Node2D body) {
@@ -282,7 +288,7 @@ public partial class Player : Person
 			Position += velocity * (float)delta;
 			Position = new Vector2(
 				x: Mathf.Clamp(Position.X, 0, ScreenSize.X),
-				y: Mathf.Clamp(Position.Y, ScreenSize.Y - 700, ScreenSize.Y)
+				y: Mathf.Clamp(Position.Y, ScreenSize.Y - 900, ScreenSize.Y)
 			);
 		}
 		
