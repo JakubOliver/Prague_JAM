@@ -20,7 +20,7 @@ public interface IPerson
 
 public enum PersonState
 {
-	Idle, Running, Dead, Hit, Attack, Charging
+	Idle, Running, Dead, Hit, Attack, Charging, None
 }
 
 public class DoubleWrapper
@@ -37,8 +37,7 @@ public abstract partial class Person : Area2D, IPerson, IState
 {
 	[Signal]
 	public delegate void HitEventHandler();
-
-	[Export]	
+	
 	public int Speed { get; set; } = 400;
 	public Vector2 ScreenSize;
 	
@@ -102,7 +101,7 @@ public abstract partial class Person : Area2D, IPerson, IState
 				break;
 			case PersonState.Hit:
 				AnimatedSprite2D.Play("hit");
-				HitCooldownTimer.Value = AttackCooldown;
+				HitCooldownTimer.Value = HitCooldown;
 				
 				if (Health <= 0)
 				{
@@ -142,7 +141,6 @@ public abstract partial class Person : Area2D, IPerson, IState
 	{
 		if (cooldown.Value > 0)
 		{
-			GD.Print("Decrease");
 			cooldown.Value -= delta;
 		}
 		if (cooldown.Value <= 0)
@@ -191,7 +189,7 @@ public abstract partial class Person : Area2D, IPerson, IState
 		Speed = 400;
 		ScreenSize = GetViewportRect().Size;
 		AnimatedSprite2D = GetNode<AnimatedSprite2D>("AnimatedSprite2D");
-		AnimatedSprite2D.Play("idle");
+		//AnimatedSprite2D.Play("idle");
 		AnimatedSprite2D.AnimationFinished += () =>
 		{
 			if (State != PersonState.Dead)
@@ -291,12 +289,10 @@ public partial class Player : Person
 			if (velocity != Vector2.Zero)
 			{
 				ChangeState(PersonState.Running);
-				AnimatedSprite2D.Play("run");
 			}
 			else
 			{
 				ChangeState(PersonState.Idle);
-				AnimatedSprite2D.Play("idle");
 			}
 		}
 		
@@ -321,51 +317,15 @@ public partial class Player : Person
 		}
 		
 		Scale = scale;
-		
-		/*if (CooldownTimer > 0 && State == PersonState.Charging)
-		{
-			if (CooldownTimer - delta <= 0)
-			{
-				CooldownTimer = 0;
-				ChangeState(PersonState.Attack);
-			}
-			else
-			{
-				CooldownTimer -= delta;
-			}
-		}*/
 
 		if (CooldownTimer.Value > 0)
 		{
 			CoolDownManager(delta, CooldownTimer, () =>
 			{
-				GD.Print("From invoke"); 
 				CooldownTimer.Value = 0;
 				ChangeState(PersonState.Attack);
 			});
 		}
-		
-		/*if (HitCooldownTimer > 0)
-		{
-			if (HitCooldownTimer - delta <= 0)
-			{
-				HitCooldownTimer = 0;
-				if (InCollision && CollisionVictim.State != PersonState.Dead)
-				{
-					GD.Print("Changed to charging");
-					AnimatedSprite2D.Play("idle");
-					ChangeState(PersonState.Charging);
-					return;
-				}
-
-				GD.Print("Hit cooldown?");
-				ChangeState(PersonState.Idle);
-			}
-			else
-			{
-				HitCooldownTimer -= delta;
-			}
-		}*/
 		
 		
 	}
