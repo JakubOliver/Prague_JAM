@@ -158,6 +158,7 @@ public abstract partial class Person : Area2D, IPerson, IState
 
 	public override void _Ready()
 	{
+		Speed = 400;
 		ScreenSize = GetViewportRect().Size;
 		AnimatedSprite2D = GetNode<AnimatedSprite2D>("AnimatedSprite2D");
 		AnimatedSprite2D.Play("idle");

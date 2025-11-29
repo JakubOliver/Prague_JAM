@@ -67,6 +67,7 @@ public partial class Soldier : Person
 	// Called when the node enters the scene tree for the first time.
 	public override void _Ready()
 	{
+		Speed = 400;
 		PersonName = "Soldier";
 		
 		AttackCooldown = 0.5;
