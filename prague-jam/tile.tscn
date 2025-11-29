@@ -4,7 +4,7 @@
 [ext_resource type="Texture2D" uid="uid://btklxlp8hb0ap" path="res://Sprites/Tiles/lava.png" id="2_vx4y2"]
 
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_vx4y2"]
-size = Vector2(38, 49)
+size = Vector2(38, 39.5)
 
 [node name="Tile" type="Area2D"]
 script = ExtResource("1_vx4y2")
@@ -13,5 +13,5 @@ script = ExtResource("1_vx4y2")
 texture = ExtResource("2_vx4y2")
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="."]
-position = Vector2(0, -25.5)
+position = Vector2(1, -11.25)
 shape = SubResource("RectangleShape2D_vx4y2")
