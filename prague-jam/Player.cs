@@ -25,6 +25,9 @@ public enum PersonState
 
 public abstract partial class Person : Area2D, IPerson, IState
 {
+	[Signal]
+	public delegate void HitEventHandler();
+
 	[Export]	
 	public int Speed { get; set; } = 400;
 	public Vector2 ScreenSize;
@@ -33,7 +36,7 @@ public abstract partial class Person : Area2D, IPerson, IState
 
 	public PersonState State { get; set; } = PersonState.Idle;
 
-	public string PlayerName = "Person";
+	public string PersonName = "Person";
 	
 	public int Health { get; set; } = 100;
 	public int Damage { get; set; } = 10;
@@ -58,7 +61,7 @@ public abstract partial class Person : Area2D, IPerson, IState
 
 		if (newState != State)
 		{
-			GD.Print("Changing state of " + PlayerName + " to " + newState);
+			GD.Print("Changing state of " + PersonName + " to " + newState);
 		}
 
 		OnStateExit(State);
@@ -171,9 +174,6 @@ public abstract partial class Person : Area2D, IPerson, IState
 
 public partial class Player : Person
 {
-	[Signal]
-	public delegate void HitEventHandler();
-
 	private void OnBodyEntered(Node2D body)
 	{
 		InCollision = true;
@@ -204,7 +204,7 @@ public partial class Player : Person
 	public override void _Ready()
 	{
 		base._Ready();
-		PlayerName = "Player";
+		PersonName = "Player";
 	}
 	
 	Vector2 scale = new Vector2(1, 1);
@@ -288,7 +288,7 @@ public partial class Player : Person
 			Position += velocity * (float)delta;
 			Position = new Vector2(
 				x: Mathf.Clamp(Position.X, 0, ScreenSize.X),
-				y: Mathf.Clamp(Position.Y, ScreenSize.Y - 900, ScreenSize.Y)
+				y: Mathf.Clamp(Position.Y, ScreenSize.Y - 900, ScreenSize.Y - 220)
 			);
 		}
 		

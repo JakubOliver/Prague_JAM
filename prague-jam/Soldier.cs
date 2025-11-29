@@ -7,17 +7,30 @@ public partial class Soldier : Person
 {
 	[Signal]
 	public delegate void HitEventHandler();
-	
-	private void OnBodyEntered(Node2D body) {
+
+	private void OnBodyEntered(Node2D body)
+	{
+		if (body is ITile)
+		{
+			return;
+		}
+
 		InCollision = true;
 		CollisionVictim = (IPerson)body;
-		ChangeState(PersonState.Charging);
+		if (CollisionVictim.State != PersonState.Dead)
+		{
+			ChangeState(PersonState.Charging);
+		}
 	}
 	
 	private void OnBodyExited(Node2D body) {
 		GD.Print("OnBodyExited");
 		InCollision = false;
 		CollisionVictim = null;
+		if (State != PersonState.Hit)
+		{
+			ChangeState(PersonState.Idle);
+		}
 	}
 	
 	public override void OnStateEnter(PersonState state)
@@ -54,10 +67,11 @@ public partial class Soldier : Person
 	// Called when the node enters the scene tree for the first time.
 	public override void _Ready()
 	{
-		Name = "Soldier";
+		PersonName = "Soldier";
 		
 		AttackCooldown = 0.5;
 		
+		ScreenSize = GetViewportRect().Size;
 		
 		AnimatedSprite2D = GetNode<AnimatedSprite2D>("AnimatedSprite2D");
 		AnimatedSprite2D.Play("idle");
@@ -66,10 +80,91 @@ public partial class Soldier : Person
 		{
 			if (State != PersonState.Dead && State != PersonState.Attack && State != PersonState.Charging)
 			{
-				GD.Print("Idle again huh");
 				AnimatedSprite2D.Play("idle");
 			}
 		};
+	}
+
+	private Vector2 velocityBase = new Vector2(1, 1);
+
+	public void Move(double delta)
+	{
+		Vector2 velocity = velocityBase;
+		
+		if (State != PersonState.Attack && State != PersonState.Charging)
+		{
+			if (velocity != Vector2.Zero)
+			{
+				ChangeState(PersonState.Running);
+				AnimatedSprite2D.Play("run");
+			}
+			else
+			{
+				ChangeState(PersonState.Idle);
+				AnimatedSprite2D.Play("idle");
+			}
+		}
+		
+		if (velocity.Length() > 0){
+			velocity = velocity.Normalized() * Speed;
+		}
+		GD.Print("Screensize: " + ScreenSize);
+		if (State != PersonState.Charging && State != PersonState.Attack)
+		{
+			if (Position.Y >= ScreenSize.Y - 220 || Position.Y <= ScreenSize.Y - 900)
+			{
+				if (Position.Y >= ScreenSize.Y - 220)
+				{
+					Position = new Vector2(
+						x: Position.X,
+						y: ScreenSize.Y - 230
+						);
+				}
+				if (Position.Y <= ScreenSize.Y - 900)
+				{
+					Position = new Vector2(
+						x: Position.X,
+						y: ScreenSize.Y - 890
+					);
+				}
+				velocityBase.X = velocityBase.X;
+				velocityBase.Y = -velocityBase.Y;
+			}
+
+			if (Position.X <= 0 || Position.X >= ScreenSize.X)
+			{
+				if (Position.X <= 0)
+				{
+					Position = new Vector2(
+						x: 10,
+						y: Position.Y
+					);
+				}
+
+				if (Position.X >= ScreenSize.X)
+				{
+					Position = new Vector2(
+						x: ScreenSize.X-10,
+						y: Position.Y
+					);
+				}
+				
+				velocityBase.X = -velocityBase.X;
+				velocityBase.Y = velocityBase.Y;
+			}
+			
+			Position += velocity * (float)delta;
+			Position = new Vector2(
+				x: Mathf.Clamp(Position.X, 0, ScreenSize.X),
+				y: Mathf.Clamp(Position.Y, ScreenSize.Y - 900, ScreenSize.Y - 220)
+			);
+
+			Vector2 scale = new Vector2(velocityBase.X, 1);
+			
+			Scale = scale;
+		}
+
+
 	}
 
 	// Called every frame. 'delta' is the elapsed time since the previous frame.
@@ -79,6 +174,8 @@ public partial class Soldier : Person
 		{
 			return;
 		}
+		
+		Move(delta);
 		
 		if (CooldownTimer > 0 && State == PersonState.Charging)
 		{
@@ -114,6 +211,8 @@ public partial class Soldier : Person
 				HitCooldownTimer -= delta;
 			}
 		}
+		
+		
 		
 	}
 }
