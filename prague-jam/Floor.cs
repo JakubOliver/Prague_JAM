@@ -4,27 +4,47 @@ using System.Collections.Generic;
 
 public partial class Floor : TileMapLayer
 {
-	const int _maxNotOutOfRangeCoordinateX = 113;
-	const int _maxNotOutOfRangeCoordinateY = 38;
+	private const int MaxNotOutOfRangeCoordinateX = 113;
+	private const int MaxNotOutOfRangeCoordinateY = 38;
 	
 	private readonly Queue<Vector2I> _lavaTiles = new();
-	
-	private (Vector2I, Vector2I) ExcludedCoordinates() => (Vector2I.Zero, Vector2I.Zero);
-	
-	private void SetLavaTile(Vector2I coordinates)
+
+	private Vector2 ArenaCoordinates(Vector2I floorCoordinates)
 	{
-		_lavaTiles.Enqueue(coordinates);
-		SetCell(coordinates, 0, new Vector2I(0, 0));
+		var tileMapPosition = Position;
+		return tileMapPosition + floorCoordinates * TileSet.TileSize;
+	}
+	
+	private void SetLavaTile(Vector2I floorCoordinates)
+	{
+		if (OverlapsWithPlayer(ArenaCoordinates(floorCoordinates))) return;
+		
+		SetCell(floorCoordinates, 0, new Vector2I(0, 0));
+		_lavaTiles.Enqueue(floorCoordinates);
 	}
 
+	private bool OverlapsWithPlayer(Vector2 arenaCoordinates)
+	{
+		const int lavaBlockSize = 100;
+		const int playerSize = 230;
+		
+		var player = GetParent().GetNode<Player>("Player");
+		var collisionShape = player.GetNode<CollisionShape2D>("CollisionShape2D");
+		
+		var playerPosition = player.Position - 150 * new Vector2(1, 0);
+	
+		Rect2 playerRect = new Rect2(playerPosition, new Vector2(playerSize, playerSize));
+		Rect2 tileRect = new Rect2(arenaCoordinates, new Vector2(lavaBlockSize, lavaBlockSize));
+		
+		return playerRect.Intersects(tileRect);
+	}
+	
+	
+	
 	public void GenerateRandomLavaTile()
 	{
-		var excludedCoordinates = ExcludedCoordinates();
-		var upLeftCoordinate = excludedCoordinates.Item1;
-		var downRightCoordinate = excludedCoordinates.Item2;
-		
-		int x = GD.RandRange(0, _maxNotOutOfRangeCoordinateX);
-		int y = GD.RandRange(0, _maxNotOutOfRangeCoordinateY);
+		int x = GD.RandRange(0, MaxNotOutOfRangeCoordinateX);
+		int y = GD.RandRange(0, MaxNotOutOfRangeCoordinateY);
 		
 		SetLavaTile(new Vector2I(x, y));
 	}
@@ -35,14 +55,14 @@ public partial class Floor : TileMapLayer
 	}
 	
 	public void CoverWithLava() {
-		for (int x = 0; x <= _maxNotOutOfRangeCoordinateX; ++x)
-		for (int y = 0; y <= _maxNotOutOfRangeCoordinateY; ++y)
+		for (int x = 0; x <= MaxNotOutOfRangeCoordinateX; ++x)
+		for (int y = 0; y <= MaxNotOutOfRangeCoordinateY; ++y)
 			SetLavaTile(new Vector2I(x, y));
 	}	
 	
 	public override void _Ready()
 	{
-		//GD.Seed(12345);
+		// GD.Seed(12343);
 		for (int i = 0; i < 5; ++i) GenerateRandomLavaTile();
 		//for (int i = 0; i < 5; ++i) ClearLeastRecentLavaTile();
 	}
