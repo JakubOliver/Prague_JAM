@@ -2,16 +2,16 @@
 
 importer="texture"
 type="CompressedTexture2D"
-uid="uid://dix7p1lp31vxx"
-path="res://.godot/imported/soldier_block.png-000291b4e171ce713742b1e211f486ac.ctex"
+uid="uid://bh65i0amvwlyk"
+path="res://.godot/imported/_Run.png-27151d925517a9f46ee00879482ef3e8.ctex"
 metadata={
 "vram_texture": false
 }
 
 [deps]
 
-source_file="res://Sprites/Soldier/soldier_block.png"
-dest_files=["res://.godot/imported/soldier_block.png-000291b4e171ce713742b1e211f486ac.ctex"]
+source_file="res://Sprites/Soldier/Fire_shoes/_Run.png"
+dest_files=["res://.godot/imported/_Run.png-27151d925517a9f46ee00879482ef3e8.ctex"]
 
 [params]
 
