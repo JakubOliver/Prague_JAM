@@ -279,7 +279,7 @@ public partial class Player : Person
 			Position += velocity * (float)delta;
 			Position = new Vector2(
 				x: Mathf.Clamp(Position.X, 0, ScreenSize.X),
-				y: Mathf.Clamp(Position.Y, ScreenSize.Y - 700, ScreenSize.Y)
+				y: Mathf.Clamp(Position.Y, ScreenSize.Y - 900, ScreenSize.Y)
 			);
 		}
 		
