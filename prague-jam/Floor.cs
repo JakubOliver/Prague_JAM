@@ -8,7 +8,9 @@ public partial class Floor : TileMapLayer
 	const int _maxNotOutOfRangeCoordinateY = 38;
 	
 	private readonly Queue<Vector2I> _lavaTiles = new();
-
+	
+	private (Vector2I, Vector2I) ExcludedCoordinates() => (Vector2I.Zero, Vector2I.Zero);
+	
 	private void SetLavaTile(Vector2I coordinates)
 	{
 		_lavaTiles.Enqueue(coordinates);
@@ -17,6 +19,10 @@ public partial class Floor : TileMapLayer
 
 	public void GenerateRandomLavaTile()
 	{
+		var excludedCoordinates = ExcludedCoordinates();
+		var upLeftCoordinate = excludedCoordinates.Item1;
+		var downRightCoordinate = excludedCoordinates.Item2;
+		
 		int x = GD.RandRange(0, _maxNotOutOfRangeCoordinateX);
 		int y = GD.RandRange(0, _maxNotOutOfRangeCoordinateY);
 		
