@@ -1,6 +1,7 @@
-[gd_scene load_steps=4 format=3 uid="uid://cxolsykkm1i14"]
+[gd_scene load_steps=5 format=3 uid="uid://cxolsykkm1i14"]
 
 [ext_resource type="PackedScene" uid="uid://bjy7iiuikeupb" path="res://tile.tscn" id="1_oj3tl"]
+[ext_resource type="Script" uid="uid://eethnr4oxvhj" path="res://Floor.cs" id="2_cgngl"]
 
 [sub_resource type="TileSetScenesCollectionSource" id="TileSetScenesCollectionSource_cgngl"]
 scenes/1/scene = ExtResource("1_oj3tl")
@@ -10,3 +11,4 @@ sources/0 = SubResource("TileSetScenesCollectionSource_cgngl")
 
 [node name="Floor" type="TileMapLayer"]
 tile_set = SubResource("TileSet_wd3ws")
+script = ExtResource("2_cgngl")
