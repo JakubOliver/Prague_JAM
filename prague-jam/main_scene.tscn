@@ -10,11 +10,11 @@ script = ExtResource("1_gyfs4")
 
 [node name="Player" parent="." instance=ExtResource("1_0f027")]
 z_index = 2
-position = Vector2(124, 118)
+position = Vector2(494, 700)
 
 [node name="Soldier" parent="." instance=ExtResource("2_2c62f")]
 z_index = 2
-position = Vector2(425, 194)
+position = Vector2(1020, 688)
 
 [node name="Sprite2D" type="Sprite2D" parent="."]
 position = Vector2(960, 540)
