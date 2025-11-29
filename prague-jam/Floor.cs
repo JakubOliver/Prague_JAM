@@ -61,8 +61,15 @@ public partial class Floor : TileMapLayer
 			SetLavaTile(new Vector2I(x, y));
 	}	
 	
+	private void GetTiles(int value)
+	{
+		for (int i = 0; i < value; ++i) GenerateRandomLavaTile();
+	}
+	
 	public override void _Ready()
 	{
+		//GD.Seed(12345);
+		GetTiles(5);
 
 		// GD.Seed(12343);
 		for (int i = 0; i < 5; ++i) GenerateRandomLavaTile();

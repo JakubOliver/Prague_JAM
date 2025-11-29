@@ -23,6 +23,16 @@ public enum PersonState
 	Idle, Running, Dead, Hit, Attack, Charging
 }
 
+public class DoubleWrapper
+{
+	public double Value;
+	
+	public DoubleWrapper(double value)
+	{
+		Value = value;
+	}
+}
+
 public abstract partial class Person : Area2D, IPerson, IState
 {
 	[Signal]
@@ -41,13 +51,13 @@ public abstract partial class Person : Area2D, IPerson, IState
 	public int Health { get; set; } = 100;
 	public int Damage { get; set; } = 10;
 	
-	public double AttackCooldown { get; set; } = 0.1;
+	public double AttackCooldown { get; set; } = 0.3;
 	
 	public double HitCooldown { get; set; } = 0.2;
 
-	public double CooldownTimer { get; set; } = 0.0;
+	public DoubleWrapper CooldownTimer { get; set; } = new DoubleWrapper(0.0);
 	
-	public double HitCooldownTimer { get; set; } = 0.0;
+	public DoubleWrapper HitCooldownTimer { get; set; } = new DoubleWrapper(0.0);
 	
 	public bool InCollision = false;
 	public IPerson CollisionVictim = null;
@@ -80,9 +90,9 @@ public abstract partial class Person : Area2D, IPerson, IState
 				AnimatedSprite2D.Play("run");
 				break;
 			case PersonState.Charging:
-				if (CooldownTimer == 0.0)
+				if (CooldownTimer.Value == 0.0)
 				{
-					CooldownTimer = AttackCooldown;
+					CooldownTimer.Value = AttackCooldown;
 				}
 
 				break;
@@ -92,7 +102,7 @@ public abstract partial class Person : Area2D, IPerson, IState
 				break;
 			case PersonState.Hit:
 				AnimatedSprite2D.Play("hit");
-				HitCooldownTimer = AttackCooldown;
+				HitCooldownTimer.Value = AttackCooldown;
 				
 				if (Health <= 0)
 				{
@@ -103,6 +113,7 @@ public abstract partial class Person : Area2D, IPerson, IState
 				//ChangeState(PersonState.Idle);
 				break;
 			case PersonState.Dead:
+				ZIndex = 1;
 				AnimatedSprite2D.Play("death");
 				break;
 		}
@@ -127,8 +138,27 @@ public abstract partial class Person : Area2D, IPerson, IState
 		}
 	}
 	
+	public void CoolDownManager(double delta, DoubleWrapper cooldown, Action onComplete)
+	{
+		if (cooldown.Value > 0)
+		{
+			GD.Print("Decrease");
+			cooldown.Value -= delta;
+		}
+		if (cooldown.Value <= 0)
+		{
+			GD.Print("Invoke");
+			cooldown.Value = 0;
+			onComplete?.Invoke();
+		}
+	}
+	
 	public virtual void HitSomeone()
 	{
+		if (CollisionVictim == null)
+		{
+			return;
+		}
 		if (InCollision)
 		{
 			CollisionVictim.GetHit(Damage, Scale);
@@ -248,7 +278,6 @@ public partial class Player : Person
 		
 		if (Input.IsActionPressed("attack"))
 		{
-			GD.Print("Attack");
 			ChangeState(PersonState.Charging);
 		}
 		
@@ -271,18 +300,16 @@ public partial class Player : Person
 			}
 		}
 		
-		if (HitCooldownTimer > 0)
+		if (HitCooldownTimer.Value > 0)
 		{
-			if (HitCooldownTimer - delta <= 0)
+			CoolDownManager(delta, HitCooldownTimer, () =>
 			{
-				HitCooldownTimer = 0;
+				HitCooldownTimer.Value = 0;
 				ChangeState(PersonState.Idle);
-			}
-			else
-			{
-				HitCooldownTimer -= delta;
-			}
+			});
 		}
+		
+		
 
 		if (State != PersonState.Charging && State != PersonState.Attack)
 		{
@@ -295,7 +322,7 @@ public partial class Player : Person
 		
 		Scale = scale;
 		
-		if (CooldownTimer > 0 && State == PersonState.Charging)
+		/*if (CooldownTimer > 0 && State == PersonState.Charging)
 		{
 			if (CooldownTimer - delta <= 0)
 			{
@@ -306,9 +333,19 @@ public partial class Player : Person
 			{
 				CooldownTimer -= delta;
 			}
+		}*/
+
+		if (CooldownTimer.Value > 0)
+		{
+			CoolDownManager(delta, CooldownTimer, () =>
+			{
+				GD.Print("From invoke"); 
+				CooldownTimer.Value = 0;
+				ChangeState(PersonState.Attack);
+			});
 		}
 		
-		if (HitCooldownTimer > 0)
+		/*if (HitCooldownTimer > 0)
 		{
 			if (HitCooldownTimer - delta <= 0)
 			{
@@ -328,7 +365,9 @@ public partial class Player : Person
 			{
 				HitCooldownTimer -= delta;
 			}
-		}
+		}*/
+		
+		
 	}
 
 }

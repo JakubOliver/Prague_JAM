@@ -8,6 +8,8 @@ public partial class Soldier : Person
 	[Signal]
 	public delegate void HitEventHandler();
 
+	public Player PlayerInstance;
+
 	private void OnBodyEntered(Node2D body)
 	{
 		if (body is ITile)
@@ -27,10 +29,10 @@ public partial class Soldier : Person
 		GD.Print("OnBodyExited");
 		InCollision = false;
 		CollisionVictim = null;
-		if (State != PersonState.Hit)
-		{
+		//if (State != PersonState.Hit)
+		//{
 			ChangeState(PersonState.Idle);
-		}
+		//}
 	}
 	
 	public override void OnStateEnter(PersonState state)
@@ -39,6 +41,10 @@ public partial class Soldier : Person
 		switch (state)
 		{
 			case PersonState.Attack:
+				if (CollisionVictim == null)
+				{
+					return;
+				}
 				if (CollisionVictim.State != PersonState.Dead)
 				{
 					ChangeState(PersonState.Charging);
@@ -67,8 +73,11 @@ public partial class Soldier : Person
 	// Called when the node enters the scene tree for the first time.
 	public override void _Ready()
 	{
-		Speed = 400;
+		Speed = 250;
 		PersonName = "Soldier";
+		
+		//PlayerInstance = GetNode<Area2D>("Player");
+		PlayerInstance = (Player)GetParent().GetNode<Area2D>("Player");
 		
 		AttackCooldown = 0.5;
 		
@@ -90,6 +99,14 @@ public partial class Soldier : Person
 
 	public void Move(double delta)
 	{
+
+		if (PlayerInstance.State != PersonState.Dead)
+		{
+			Vector2 diff = PlayerInstance.Position - Position;
+			velocityBase.X = diff.X >= 0 ? 1 : -1;
+			velocityBase.Y = diff.Y >= 0 ? 1 : -1;
+		}
+
 		Vector2 velocity = velocityBase;
 		
 		if (State != PersonState.Attack && State != PersonState.Charging)
@@ -109,7 +126,7 @@ public partial class Soldier : Person
 		if (velocity.Length() > 0){
 			velocity = velocity.Normalized() * Speed;
 		}
-
+		
 		if (State != PersonState.Charging && State != PersonState.Attack)
 		{
 			if (Position.Y >= ScreenSize.Y - 220 || Position.Y <= ScreenSize.Y - 900)
@@ -178,39 +195,31 @@ public partial class Soldier : Person
 		
 		Move(delta);
 		
-		if (CooldownTimer > 0 && State == PersonState.Charging)
+		if (CooldownTimer.Value > 0)
 		{
-			if (CooldownTimer - delta <= 0)
+			CoolDownManager(delta, CooldownTimer, () =>
 			{
-				CooldownTimer = 0;
+				CooldownTimer.Value = 0;
 				ChangeState(PersonState.Attack);
-			}
-			else
-			{
-				CooldownTimer -= delta;
-			}
+			});
 		}
 		
-		if (HitCooldownTimer > 0)
+		if (HitCooldownTimer.Value > 0)
 		{
-			if (HitCooldownTimer - delta <= 0)
-			{
-				HitCooldownTimer = 0;
-				if (InCollision && CollisionVictim.State != PersonState.Dead)
+			CoolDownManager(delta, HitCooldownTimer, () =>
 				{
-					GD.Print("Changed to charging");
-					AnimatedSprite2D.Play("idle");
-					ChangeState(PersonState.Charging);
-					return;
-				}
+					HitCooldownTimer.Value = 0;
+					if (InCollision && CollisionVictim.State != PersonState.Dead)
+					{
+						GD.Print("Changed to charging");
+						AnimatedSprite2D.Play("idle");
+						ChangeState(PersonState.Charging);
+						return;
+					}
 
-				GD.Print("Hit cooldown?");
-				ChangeState(PersonState.Idle);
-			}
-			else
-			{
-				HitCooldownTimer -= delta;
-			}
+					GD.Print("Hit cooldown?");
+					ChangeState(PersonState.Idle);
+				});
 		}
 		
 		
