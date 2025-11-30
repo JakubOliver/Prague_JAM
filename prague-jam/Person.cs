@@ -128,6 +128,11 @@ public partial class Person : Area2D
 		}
 	}
 
+	protected virtual void OnHit()
+	{
+		
+	}
+
 	protected void ChangeAnimation(Stages newStage)
 	{
 		if (Stage == newStage) return;

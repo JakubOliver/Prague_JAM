@@ -14,7 +14,7 @@ public partial class Wizard : Person
 	// Called when the node enters the scene tree for the first time.
 	public override void _Ready()
 	{
-		Health = 5;
+		Health = 100;
 		Speed = 0;
 		AnimatedSprite2D = GetNode<AnimatedSprite2D>("AnimatedSprite2D");
 		AnimatedSprite2D.Play("idle");
@@ -39,6 +39,12 @@ public partial class Wizard : Person
 		SummonCoolDown -= delta;
 		FaitCoolDown -= delta;
 
+		if (Stage == Stages.Hit)
+		{
+			ProcessHitCoolDown(delta);
+			return;
+		}
+		
 		if (SummonCoolDown <= 0)
 		{
 			AnimatedSprite2D.Play("attack");
