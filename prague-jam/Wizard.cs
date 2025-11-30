@@ -39,6 +39,12 @@ public partial class Wizard : Person
 		SummonCoolDown -= delta;
 		FaitCoolDown -= delta;
 
+		if (Stage == Stages.Hit)
+		{
+			ProcessHitCoolDown(delta);
+			return;
+		}
+		
 		if (SummonCoolDown <= 0)
 		{
 			AnimatedSprite2D.Play("attack");
@@ -60,11 +66,6 @@ public partial class Wizard : Person
 			floor.ClearLeastRecentLavaTile();
 			FaitCoolDown = FAIT_COOLDOWN_MAX;
 		}
-	}
-
-	protected override void OnHit()
-	{
-		
 	}
 
 	protected override async void Dead()

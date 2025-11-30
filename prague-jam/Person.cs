@@ -163,7 +163,6 @@ public partial class Person : Area2D
 				break;
 			case Stages.Hit:
 				AnimatedSprite2D.Play("hit");
-				OnHit();
 				sfx_hit.Play();
 				break;
 			case Stages.Dead:
