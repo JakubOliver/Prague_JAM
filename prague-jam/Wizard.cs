@@ -20,6 +20,7 @@ public partial class Wizard : Person
 		AnimatedSprite2D.Play("idle");
 		GetTransition();
 		GetDeathSound();
+		GetHitSound();
 
 		floor = GetParent().GetNode<Floor>("Floor");
 
