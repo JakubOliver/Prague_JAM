@@ -15,14 +15,7 @@ public partial class MainScene : Node2D
 		await ToSignal(AnimationPlayer, "animation_finished");
 	}
 
-	public override async void _Input(InputEvent @event)
-	{
-		if (@event.IsActionPressed("accept"))
-		{
-			AnimationPlayer.Play("fade_out");
-			await ToSignal(AnimationPlayer, "animation_finished");
-		}
-	}
+	
 
 	// Called every frame. 'delta' is the elapsed time since the previous frame.
 	public override void _Process(double delta)
