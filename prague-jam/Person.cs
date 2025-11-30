@@ -10,6 +10,9 @@ public partial class Person : Area2D
 	public Stages Stage = Stages.Idle;
 	public  bool InCollision = false;
 	public Person InCollisionWith = null;
+	public Person player = null;
+	public Person soldier = null;
+	public Person wizard = null;
 	public Vector2 ScreenSize;
 	public AnimatedSprite2D AnimatedSprite2D;
 	public int Health;
@@ -44,15 +47,24 @@ public partial class Person : Area2D
 		sfx_hit = GetNode<AudioStreamPlayer2D>("sfx_hit");
 	}
 
-	public void DoHit(Person target)
+	public void DoHit(Person target, Person target2)
 	{
 		ChangeAnimation(Stages.Attack);
 
 		if (target != null)
 		{
 			target.GetHit(Damage);
-			GD.Print("Hit for " + Damage);
 		}
+
+		if (target2 != null)
+		{
+			target2.GetHit(Damage);
+		}
+	}
+
+	public void DoHit(Person target)
+	{
+		DoHit(target, null);
 	}
 
 	virtual protected async void Dead()
@@ -72,9 +84,9 @@ public partial class Person : Area2D
 		{
 			//sfx_death.Play();
 			ChangeAnimation(Stages.Dead);
-			if (InCollisionWith != null)
+			if (player != null)
 			{
-				InCollisionWith.ChangeAnimation(Stages.Idle);
+				player.ChangeAnimation(Stages.Idle);
 				Dead();
 				return;
 			}

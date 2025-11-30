@@ -18,14 +18,28 @@ public partial class Player : Person{
 			return; 
 		}
 
-		InCollision = true;
-		InCollisionWith = (Person)area;
+		if (area is Soldier)
+		{
+			soldier = (Person)area;
+		}
+
+		if (area is Wizard)
+		{
+			wizard = (Person)area;
+		}
 	}
 
 	public void OnBodyExited(Area2D area)
 	{
-		InCollision = false;
-		InCollisionWith = null;
+		if (area is Soldier)
+		{
+			soldier = null;
+		}
+
+		if (area is Wizard)
+		{
+			wizard = null;
+		}
 	}
 
 	public override void _Ready()
@@ -82,7 +96,7 @@ public partial class Player : Person{
 			if (TimeInAttack >= ATTACK_TIME_MAX)
 			{
 				GD.Print("Attack");
-				DoHit(InCollisionWith);
+				DoHit(soldier, wizard);
 				TimeInAttack = 0;
 				AttackCoolDown = ATTACK_COOLDOWN_MAX;
 			}
