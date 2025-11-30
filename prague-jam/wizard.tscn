@@ -1,4 +1,4 @@
-[gd_scene load_steps=42 format=3 uid="uid://c5ncsosyaadht"]
+[gd_scene load_steps=43 format=3 uid="uid://c5ncsosyaadht"]
 
 [ext_resource type="Texture2D" uid="uid://c5cnoyci5l1kx" path="res://Sprites/Gandalf/Attack1.png" id="1_wsbrn"]
 [ext_resource type="Texture2D" uid="uid://d548ydvf3vbi" path="res://Sprites/Gandalf/Death.png" id="2_rsvjg"]
@@ -6,6 +6,7 @@
 [ext_resource type="Texture2D" uid="uid://dl6jbj6uto5vi" path="res://Sprites/Gandalf/Idle.png" id="4_2tmfn"]
 [ext_resource type="Texture2D" uid="uid://cfohpkrv0w7fk" path="res://Sprites/Gandalf/Run.png" id="5_bd25x"]
 [ext_resource type="AudioStream" uid="uid://c7wf7121h3vsn" path="res://SFX/wizard_death.wav" id="6_rsvjg"]
+[ext_resource type="AudioStream" uid="uid://byi5cuvqwgsfc" path="res://SFX/sfx_damage_hit.wav" id="7_74p71"]
 
 [sub_resource type="AtlasTexture" id="AtlasTexture_20pe4"]
 atlas = ExtResource("1_wsbrn")
@@ -283,3 +284,6 @@ shape = SubResource("RectangleShape2D_rsvjg")
 
 [node name="sfx_death" type="AudioStreamPlayer2D" parent="."]
 stream = ExtResource("6_rsvjg")
+
+[node name="sfx_hit" type="AudioStreamPlayer2D" parent="."]
+stream = ExtResource("7_74p71")
