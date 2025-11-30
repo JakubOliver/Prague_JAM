@@ -1,4 +1,4 @@
-[gd_scene load_steps=9 format=3 uid="uid://c2sxk6hyywpva"]
+[gd_scene load_steps=10 format=3 uid="uid://c2sxk6hyywpva"]
 
 [ext_resource type="PackedScene" uid="uid://c0my88klmnsl4" path="res://player.tscn" id="1_0f027"]
 [ext_resource type="Script" uid="uid://djnq517ovxygn" path="res://MainScene.cs" id="1_gyfs4"]
@@ -8,6 +8,7 @@
 [ext_resource type="PackedScene" uid="uid://dqwel2iiwd31t" path="res://transition.tscn" id="6_hq1ik"]
 [ext_resource type="PackedScene" uid="uid://br4i750u0s5u0" path="res://wizard.tscn" id="7_nfk4m"]
 [ext_resource type="Script" uid="uid://cq6m546loh8p2" path="res://Wizard.cs" id="8_66tet"]
+[ext_resource type="AudioStream" uid="uid://hiw22nbmgb2x" path="res://Music/Fight.wav" id="9_7ycvg"]
 
 [node name="MainScene" type="Node2D"]
 z_index = -1
@@ -34,3 +35,7 @@ z_index = 10
 [node name="Wizard" parent="." instance=ExtResource("7_nfk4m")]
 position = Vector2(1696.9999, 738.99994)
 script = ExtResource("8_66tet")
+
+[node name="AudioStreamPlayer2D" type="AudioStreamPlayer2D" parent="."]
+stream = ExtResource("9_7ycvg")
+autoplay = true
