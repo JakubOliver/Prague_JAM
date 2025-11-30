@@ -1,4 +1,4 @@
-[gd_scene load_steps=44 format=3 uid="uid://dn61nwubro2hg"]
+[gd_scene load_steps=46 format=3 uid="uid://dn61nwubro2hg"]
 
 [ext_resource type="Script" uid="uid://hwh1mgwj5m3a" path="res://Soldier.cs" id="1_ba3fx"]
 [ext_resource type="Texture2D" uid="uid://cmxocs7r4uv2w" path="res://Sprites/Soldier/_Attack_Grey_Alternate.png" id="2_yk5gn"]
@@ -6,6 +6,8 @@
 [ext_resource type="Texture2D" uid="uid://y0eikrsr5euh" path="res://Sprites/Soldier/_Death.png" id="3_didp5"]
 [ext_resource type="Texture2D" uid="uid://doagx6sw6hgdu" path="res://Sprites/Soldier/_Hit.png" id="4_yk5gn"]
 [ext_resource type="Texture2D" uid="uid://bh65i0amvwlyk" path="res://Sprites/Soldier/_Run.png" id="6_n78w1"]
+[ext_resource type="AudioStream" uid="uid://dmq15bkj14vv3" path="res://SFX/soldier_death.wav" id="7_n78w1"]
+[ext_resource type="AudioStream" uid="uid://byi5cuvqwgsfc" path="res://SFX/sfx_damage_hit.wav" id="8_4vhbi"]
 
 [sub_resource type="CapsuleShape2D" id="CapsuleShape2D_8swxs"]
 
@@ -295,6 +297,12 @@ position = Vector2(-0.99999994, 0)
 scale = Vector2(5, 5)
 sprite_frames = SubResource("SpriteFrames_8swxs")
 animation = &"attack"
+
+[node name="sfx_death" type="AudioStreamPlayer2D" parent="."]
+stream = ExtResource("7_n78w1")
+
+[node name="sfx_hit" type="AudioStreamPlayer2D" parent="."]
+stream = ExtResource("8_4vhbi")
 
 [connection signal="area_entered" from="." to="." method="OnBodyEntered"]
 [connection signal="area_exited" from="." to="." method="OnBodyExited"]

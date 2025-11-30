@@ -96,13 +96,13 @@ public partial class Person : Area2D
 				//sfx_death.Play();
 				Dead();
 			} else if (this is Player)
-            {
+			{
 				if (soldier != null)
-                {
+				{
 					soldier.ChangeAnimation(Stages.Idle);
-                }
-                Dead();
-            }
+				}
+				Dead();
+			}
 		}
 		else
 		{
