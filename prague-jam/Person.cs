@@ -28,10 +28,15 @@ public partial class Person : Area2D
 	public bool AlreadyInAttack = false;
 
 	protected AnimationPlayer AnimationPlayer;
+	protected AudioStreamPlayer2D sfx_death;
 
 	protected void GetTransition()
 	{
 		AnimationPlayer = GetParent().GetNode<AnimationPlayer>("Transition/AnimationPlayer");
+	}
+	protected void GetDeathSound()
+	{
+		sfx_death = GetNode<AudioStreamPlayer2D>("sfx_death");
 	}
 
 	public void DoHit(Person target)
@@ -47,9 +52,10 @@ public partial class Person : Area2D
 
 	virtual protected async void Dead()
 	{
-		await ToSignal(GetTree().CreateTimer(3.0f), SceneTreeTimer.SignalName.Timeout);
+		
+		await ToSignal(GetTree().CreateTimer(2.0f), SceneTreeTimer.SignalName.Timeout);
 		AnimationPlayer.Play("fade_in");
-		await ToSignal(AnimationPlayer, "animation_finished");
+		//await ToSignal(AnimationPlayer, "animation_finished");
 
 		GetTree().ReloadCurrentScene();
 	}
@@ -59,6 +65,7 @@ public partial class Person : Area2D
 		Health -= damage;
 		if (Health <= 0)
 		{
+			//sfx_death.Play();
 			ChangeAnimation(Stages.Dead);
 			if (InCollisionWith != null)
 			{
@@ -69,6 +76,7 @@ public partial class Person : Area2D
 
 			if (this is Wizard || this is Soldier)
 			{
+				//sfx_death.Play();
 				Dead();
 			}
 		}
@@ -122,6 +130,7 @@ public partial class Person : Area2D
 				break;
 			case Stages.Dead:
 				AnimatedSprite2D.Play("death");
+				sfx_death.Play();
 				break;
 		}
 	}

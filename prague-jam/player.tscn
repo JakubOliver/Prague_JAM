@@ -1,4 +1,4 @@
-[gd_scene load_steps=49 format=3 uid="uid://c0my88klmnsl4"]
+[gd_scene load_steps=50 format=3 uid="uid://c0my88klmnsl4"]
 
 [ext_resource type="Script" uid="uid://bjqhlejuaxf1m" path="res://Player.cs" id="1_onrkg"]
 [ext_resource type="Texture2D" uid="uid://bctxo3r8p6sxl" path="res://Sprites/Main/_Attack_Blue_Alternate.png" id="2_1jxqw"]
@@ -7,6 +7,7 @@
 [ext_resource type="Texture2D" uid="uid://bl86w7pi2gq3f" path="res://Sprites/Main/_Idle.png" id="3_i3pqv"]
 [ext_resource type="Texture2D" uid="uid://w24eu7tgorxi" path="res://Sprites/Main/_Hit.png" id="4_1jxqw"]
 [ext_resource type="Texture2D" uid="uid://dcqtu6p013pj0" path="res://Sprites/Main/_Run.png" id="4_hqtel"]
+[ext_resource type="AudioStream" uid="uid://d0ohqqc4c32ey" path="res://SFX/player_death.ogg" id="8_dw050"]
 
 [sub_resource type="CapsuleShape2D" id="CapsuleShape2D_i3pqv"]
 
@@ -332,6 +333,9 @@ sprite_frames = SubResource("SpriteFrames_4flbx")
 animation = &"attack"
 frame = 3
 frame_progress = 1.0
+
+[node name="sfx_death" type="AudioStreamPlayer2D" parent="."]
+stream = ExtResource("8_dw050")
 
 [connection signal="area_entered" from="." to="." method="OnBodyEntered"]
 [connection signal="area_exited" from="." to="." method="OnBodyExited"]

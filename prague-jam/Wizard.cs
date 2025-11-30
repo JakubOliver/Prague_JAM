@@ -19,6 +19,7 @@ public partial class Wizard : Person
 		AnimatedSprite2D = GetNode<AnimatedSprite2D>("AnimatedSprite2D");
 		AnimatedSprite2D.Play("idle");
 		GetTransition();
+		GetDeathSound();
 
 		floor = GetParent().GetNode<Floor>("Floor");
 

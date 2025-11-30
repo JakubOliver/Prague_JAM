@@ -37,6 +37,7 @@ public partial class Player : Person{
 		AnimatedSprite2D = GetNode<AnimatedSprite2D>("AnimatedSprite2D");
 		AnimatedSprite2D.Play("idle");
 		GetTransition();
+		GetDeathSound();
 	}
 
 	private void ProcessInput(double delta)
