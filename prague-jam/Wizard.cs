@@ -69,5 +69,8 @@ public partial class Wizard : Person
 		await ToSignal(AnimationPlayer, "animation_finished");
 
 		GetTree().ChangeSceneToFile("res://win_scene.tscn");
+
+		Unkillable = false;
+		ToBeEnded = false;
 	}
 }

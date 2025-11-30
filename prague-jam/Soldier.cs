@@ -82,6 +82,12 @@ public partial class Soldier : Person
 
 	public override void _Process(double delta)
 	{
+		if (Unkillable)
+		{
+			ChangeAnimation(Stages.Dead);
+			return;
+		}
+
 		if (Stage == Stages.Hit)
 		{
 			ProcessHitCoolDown(delta);

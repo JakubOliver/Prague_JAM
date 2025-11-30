@@ -125,6 +125,18 @@ public partial class Player : Person{
 
 	public override void _Process(double delta)
 	{
+		if (ToBeEnded){ return; }
+
+		if (Unkillable)
+		{
+			AnimatedSprite2D.AnimationFinished += () =>
+			{
+				ChangeAnimation(Stages.Idle);
+				ToBeEnded = true;
+			};
+			return;
+		}
+
 		if (Stage == Stages.Hit)
 		{
 			ProcessHitCoolDown(delta);

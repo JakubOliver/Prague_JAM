@@ -10,6 +10,8 @@ public partial class Person : Area2D
 	public Stages Stage = Stages.Idle;
 	public  bool InCollision = false;
 	protected bool playable = true;
+	public static bool Unkillable = false;
+	public static bool ToBeEnded = false;
 	public Person InCollisionWith = null;
 	public Person player = null;
 	public Person soldier = null;
@@ -80,6 +82,10 @@ public partial class Person : Area2D
 
 	public void GetHit(int damage)
 	{
+		if (Unkillable) return;
+
+		GD.Print(Unkillable);
+
 		Health -= damage;
 		if (Health <= 0)
 		{
@@ -94,7 +100,7 @@ public partial class Person : Area2D
 
 			if (this is Wizard)
 			{
-				//sfx_death.Play();
+				Unkillable = true;
 				Dead();
 			} else if (this is Player)
 			{
