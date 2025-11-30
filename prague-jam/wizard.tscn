@@ -1,4 +1,4 @@
-[gd_scene load_steps=42 format=3 uid="uid://br4i750u0s5u0"]
+[gd_scene load_steps=42 format=3 uid="uid://c5ncsosyaadht"]
 
 [ext_resource type="Texture2D" uid="uid://c5cnoyci5l1kx" path="res://Sprites/Gandalf/Attack1.png" id="1_wsbrn"]
 [ext_resource type="Texture2D" uid="uid://d548ydvf3vbi" path="res://Sprites/Gandalf/Death.png" id="2_rsvjg"]
@@ -266,9 +266,8 @@ animations = [{
 "speed": 5.0
 }]
 
-[sub_resource type="CapsuleShape2D" id="CapsuleShape2D_ssviq"]
-radius = 23.0
-height = 86.0
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_rsvjg"]
+size = Vector2(111.60002, 78.40001)
 
 [node name="Wizard" type="Area2D"]
 scale = Vector2(-2.5, 2.5)
@@ -278,8 +277,9 @@ sprite_frames = SubResource("SpriteFrames_6b177")
 animation = &"run"
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="."]
-position = Vector2(-5, 0)
-shape = SubResource("CapsuleShape2D_ssviq")
+position = Vector2(-4.4, 6.7999997)
+scale = Vector2(0.99999976, 0.99999976)
+shape = SubResource("RectangleShape2D_rsvjg")
 
 [node name="sfx_death" type="AudioStreamPlayer2D" parent="."]
 stream = ExtResource("6_rsvjg")
