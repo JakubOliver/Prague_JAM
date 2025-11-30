@@ -62,6 +62,11 @@ public partial class Wizard : Person
 		}
 	}
 
+	protected override void OnHit()
+	{
+		
+	}
+
 	protected override async void Dead()
 	{
 		await ToSignal(GetTree().CreateTimer(3.0f), SceneTreeTimer.SignalName.Timeout);

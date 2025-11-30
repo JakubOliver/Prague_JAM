@@ -128,6 +128,11 @@ public partial class Person : Area2D
 		}
 	}
 
+	protected virtual void OnHit()
+	{
+		
+	}
+
 	protected void ChangeAnimation(Stages newStage)
 	{
 		if (Stage == newStage) return;
@@ -158,6 +163,7 @@ public partial class Person : Area2D
 				break;
 			case Stages.Hit:
 				AnimatedSprite2D.Play("hit");
+				OnHit();
 				sfx_hit.Play();
 				break;
 			case Stages.Dead:
