@@ -32,6 +32,7 @@ public partial class Person : Area2D
 
 	protected AnimationPlayer AnimationPlayer;
 	protected AudioStreamPlayer2D sfx_death;
+	protected AudioStreamPlayer2D sfx_hit;
 
 	protected void GetTransition()
 	{
@@ -40,6 +41,10 @@ public partial class Person : Area2D
 	protected void GetDeathSound()
 	{
 		sfx_death = GetNode<AudioStreamPlayer2D>("sfx_death");
+	}
+	protected void GetHitSound()
+	{
+		sfx_hit = GetNode<AudioStreamPlayer2D>("sfx_hit");
 	}
 
 	public void DoHit(Person target, Person target2)
@@ -146,6 +151,7 @@ public partial class Person : Area2D
 				break;
 			case Stages.Hit:
 				AnimatedSprite2D.Play("hit");
+				sfx_hit.Play();
 				break;
 			case Stages.Dead:
 				AnimatedSprite2D.Play("death");
