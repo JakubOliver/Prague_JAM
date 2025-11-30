@@ -9,6 +9,7 @@ public partial class Person : Area2D
 {
 	public Stages Stage = Stages.Idle;
 	public  bool InCollision = false;
+	protected bool playable = true;
 	public Person InCollisionWith = null;
 	public Person player = null;
 	public Person soldier = null;
@@ -84,25 +85,25 @@ public partial class Person : Area2D
 		{
 			//sfx_death.Play();
 			ChangeAnimation(Stages.Dead);
-			if (player != null)
+			if (!playable)
 			{
-				player.ChangeAnimation(Stages.Idle);
-				Dead();
+				//player.ChangeAnimation(Stages.Idle);
+				//Dead();
 				return;
 			}
 
-			if (this is Wizard || this is Soldier)
+			if (this is Wizard)
 			{
 				//sfx_death.Play();
 				Dead();
 			} else if (this is Player)
-            {
+			{
 				if (soldier != null)
-                {
+				{
 					soldier.ChangeAnimation(Stages.Idle);
-                }
-                Dead();
-            }
+				}
+				Dead();
+			}
 		}
 		else
 		{
