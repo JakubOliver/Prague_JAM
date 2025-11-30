@@ -1,10 +1,11 @@
-[gd_scene load_steps=6 format=3 uid="uid://c6w1f8pv2y4v5"]
+[gd_scene load_steps=7 format=3 uid="uid://c6w1f8pv2y4v5"]
 
 [ext_resource type="PackedScene" uid="uid://c0my88klmnsl4" path="res://player.tscn" id="1_2cral"]
 [ext_resource type="Script" uid="uid://b5nix3piwvn1t" path="res://WinScene.cs" id="1_sel2p"]
 [ext_resource type="Texture2D" uid="uid://blxtxvypltbbm" path="res://Sprites/Arena_background/arena1.png" id="2_sel2p"]
 [ext_resource type="PackedScene" uid="uid://dqwel2iiwd31t" path="res://transition.tscn" id="3_y8qen"]
 [ext_resource type="AudioStream" uid="uid://bxssux8ys6kc6" path="res://Music/Win.wav" id="5_y8qen"]
+[ext_resource type="Texture2D" uid="uid://coir6tg3cqhde" path="res://Sprites/Arena_background/TrophyTABLE.png" id="6_226jj"]
 
 [node name="win_scene" type="Node2D"]
 script = ExtResource("1_sel2p")
@@ -30,3 +31,7 @@ text = "YOU WON!!!!"
 [node name="AudioStreamPlayer2D" type="AudioStreamPlayer2D" parent="."]
 stream = ExtResource("5_y8qen")
 autoplay = true
+
+[node name="Trophy" type="Sprite2D" parent="."]
+position = Vector2(947, 193)
+texture = ExtResource("6_226jj")
