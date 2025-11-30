@@ -22,6 +22,8 @@ public partial class Soldier : Person
 		AnimatedSprite2D = GetNode<AnimatedSprite2D>("AnimatedSprite2D");
 		AnimatedSprite2D.Play("idle");
 		GetTransition();
+		GetDeathSound();
+		GetHitSound();
 	}
 
 	public void OnBodyEntered(Area2D area)

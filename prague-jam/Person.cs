@@ -91,7 +91,7 @@ public partial class Person : Area2D
 				return;
 			}
 
-			if (this is Wizard || this is Soldier)
+			if (this is Wizard) //|| this is Soldier)
 			{
 				//sfx_death.Play();
 				Dead();
