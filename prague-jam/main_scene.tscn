@@ -6,7 +6,7 @@
 [ext_resource type="Texture2D" uid="uid://blxtxvypltbbm" path="res://Sprites/Arena_background/arena1.png" id="4_d5x1h"]
 [ext_resource type="PackedScene" uid="uid://cxolsykkm1i14" path="res://floor.tscn" id="5_8mm7a"]
 [ext_resource type="PackedScene" uid="uid://dqwel2iiwd31t" path="res://transition.tscn" id="6_hq1ik"]
-[ext_resource type="PackedScene" uid="uid://br4i750u0s5u0" path="res://wizard.tscn" id="7_nfk4m"]
+[ext_resource type="PackedScene" uid="uid://c5ncsosyaadht" path="res://wizard.tscn" id="7_nfk4m"]
 [ext_resource type="Script" uid="uid://cq6m546loh8p2" path="res://Wizard.cs" id="8_66tet"]
 [ext_resource type="AudioStream" uid="uid://hiw22nbmgb2x" path="res://Music/Fight.wav" id="9_7ycvg"]
 
